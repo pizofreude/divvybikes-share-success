@@ -246,3 +246,4 @@ cython_debug/
 # Directories
 raw/
 processed/
+external/
