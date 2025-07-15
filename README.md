@@ -191,6 +191,40 @@ The Entity Relational Diagram (ERD):
 
 ## Getting Started
 
+### Prerequisites
+- AWS CLI configured with appropriate credentials
+- Docker and Docker Compose
+- Terraform >= 1.0
+- Git
+
+### Environment Setup
+
+⚠️ **Important**: This project uses environment variables for all sensitive configuration. Never commit `.env` files or hardcoded credentials.
+
+1. **Configure environment variables**:
+   ```bash
+   # Copy templates
+   cp .env.template .env
+   cd airflow && cp .env.template .env
+   
+   # Edit both .env files with your secure passwords and configuration
+   ```
+
+2. **Set up infrastructure**:
+   ```bash
+   cd terraform
+   source load_env.sh  # Load environment variables
+   make deploy-all     # Deploy AWS infrastructure
+   ```
+
+3. **Start Airflow**:
+   ```bash
+   cd airflow
+   ./start_airflow.sh  # Starts Docker-based Airflow
+   ```
+
+📚 **Detailed Setup Guide**: See [docs/environment-setup.md](docs/environment-setup.md) for comprehensive instructions.
+
 ## Contributions and Feedback
 
 ## License
