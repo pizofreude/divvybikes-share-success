@@ -243,6 +243,68 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# Terraform specific ignores
+# Local .terraform directories
+**/.terraform*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Terraform lock files
+**/.terraform.lock.hcl
+
+# Terraform variable files - should be kept private, especially if they contain sensitive data
+**/*.tfvars
+**/*.tfvars.json
+
+# Terraform plan output files
+**/tfplan
+**/*.tfplan
+**/*.tfout
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Airflow specific ignores
+airflow/logs/
+airflow/airflow.db
+airflow/airflow-webserver.pid
+airflow/webserver_config.py
+airflow/standalone_admin_password.txt
+airflow/*.pid
+
+# AWS credentials and config
+.aws/
+aws_credentials
+credentials
+config
+*.pem
+
+# Data files - additional formats
+*.parquet
+*.json
+*.xlsx
+*.xls
+*.zip
+*.gz
+*.tar
+*.7z
+data/
+downloads/
+# Except data dictionaries and small example files
+!data/*.md
+!data/examples/
+
+# Redshift credentials and connection files
+redshift_credentials.yaml
+redshift_config.json
+
+# Docker related
+.dockerignore
+docker-compose.override.yml
+
 # Directories
 raw/
 processed/
