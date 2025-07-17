@@ -139,9 +139,9 @@ This script will:
 |----------|-------------|---------|
 | `AIRFLOW_UID` | Airflow user ID | `50000` |
 | `AWS_DEFAULT_REGION` | AWS region | `ap-southeast-2` |
-| `BRONZE_BUCKET` | Bronze layer bucket | `divvybikes-dev-bronze-data-864899839546` |
-| `SILVER_BUCKET` | Silver layer bucket | `divvybikes-dev-silver-data-864899839546` |
-| `GOLD_BUCKET` | Gold layer bucket | `divvybikes-dev-gold-data-864899839546` |
+| `BRONZE_BUCKET` | Bronze layer bucket | `divvybikes-dev-bronze-96wb3c9c` |
+| `SILVER_BUCKET` | Silver layer bucket | `divvybikes-dev-silver-96wb3c9c` |
+| `GOLD_BUCKET` | Gold layer bucket | `divvybikes-dev-gold-96wb3c9c` |
 
 ### Airflow Connections
 
@@ -155,9 +155,9 @@ This script will:
 
 | Variable | Description | Value |
 |----------|-------------|-------|
-| `bronze_bucket` | Bronze layer S3 bucket | `divvybikes-dev-bronze-data-864899839546` |
-| `silver_bucket` | Silver layer S3 bucket | `divvybikes-dev-silver-data-864899839546` |
-| `gold_bucket` | Gold layer S3 bucket | `divvybikes-dev-gold-data-864899839546` |
+| `bronze_bucket` | Bronze layer S3 bucket | `divvybikes-dev-bronze-96wb3c9c` |
+| `silver_bucket` | Silver layer S3 bucket | `divvybikes-dev-silver-96wb3c9c` |
+| `gold_bucket` | Gold layer S3 bucket | `divvybikes-dev-gold-96wb3c9c` |
 | `divvy_source_bucket` | Public source bucket | `divvy-tripdata` |
 | `data_years_to_process` | Years to process | `2023,2024` |
 
