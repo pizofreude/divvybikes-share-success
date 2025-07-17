@@ -42,19 +42,19 @@ def setup_s3_variables():
     # S3 bucket names (from Terraform outputs)
     set_variable(
         key='bronze_bucket',
-        value='divvybikes-dev-bronze-data-864899839546',
+        value='divvybikes-dev-bronze-96wb3c9c',
         description='S3 bucket for Bronze layer (raw data)'
     )
     
     set_variable(
         key='silver_bucket',
-        value='divvybikes-dev-silver-data-864899839546',
+        value='divvybikes-dev-silver-96wb3c9c',
         description='S3 bucket for Silver layer (cleaned data)'
     )
     
     set_variable(
         key='gold_bucket',
-        value='divvybikes-dev-gold-data-864899839546',
+        value='divvybikes-dev-gold-96wb3c9c',
         description='S3 bucket for Gold layer (analytics-ready data)'
     )
 
@@ -132,7 +132,7 @@ def setup_notification_variables():
     
     set_variable(
         key='notification_email',
-        value='pizofreude@example.com',
+        value='pizofreude@proton.me',
         description='Email address for pipeline notifications'
     )
     
