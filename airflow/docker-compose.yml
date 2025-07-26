@@ -17,6 +17,11 @@ x-airflow-common:
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
+    # DAG Processing Configuration
+    AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 30
+    AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 10
+    AIRFLOW__CORE__PARALLELISM: 32
+    AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: 16
     AIRFLOW__WEBSERVER__AUTHENTICATE: 'True'
     AIRFLOW__WEBSERVER__AUTH_BACKEND: 'airflow.auth.backends.password_auth'
     AIRFLOW__WEBSERVER__SECRET_KEY: 'temp-secret-key-for-development'
