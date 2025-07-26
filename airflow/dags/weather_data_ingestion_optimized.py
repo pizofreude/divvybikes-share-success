@@ -441,25 +441,26 @@ def generate_final_report(chicago_2023: Dict[str, Any], chicago_2024: Dict[str, 
         raise AirflowException(f"Failed to generate final report: {str(e)}")
 
 
-# Define task dependencies
-aws_validation = validate_aws_connectivity()
-existing_files_check = check_existing_files()
+# Define task dependencies with proper DAG context
+with dag:
+    aws_validation = validate_aws_connectivity()
+    existing_files_check = check_existing_files()
 
-# Location/year processing tasks
-chicago_2023_task = process_chicago_2023(existing_files_check)
-chicago_2024_task = process_chicago_2024(existing_files_check)
-evanston_2023_task = process_evanston_2023(existing_files_check)
-evanston_2024_task = process_evanston_2024(existing_files_check)
+    # Location/year processing tasks
+    chicago_2023_task = process_chicago_2023(existing_files_check)
+    chicago_2024_task = process_chicago_2024(existing_files_check)
+    evanston_2023_task = process_evanston_2023(existing_files_check)
+    evanston_2024_task = process_evanston_2024(existing_files_check)
 
-# Final report
-final_report = generate_final_report(
-    chicago_2023_task,
-    chicago_2024_task,
-    evanston_2023_task,
-    evanston_2024_task
-)
+    # Final report
+    final_report = generate_final_report(
+        chicago_2023_task,
+        chicago_2024_task,
+        evanston_2023_task,
+        evanston_2024_task
+    )
 
-# Set up dependencies
-aws_validation >> existing_files_check
-existing_files_check >> [chicago_2023_task, chicago_2024_task, evanston_2023_task, evanston_2024_task]
-[chicago_2023_task, chicago_2024_task, evanston_2023_task, evanston_2024_task] >> final_report
+    # Set up dependencies
+    aws_validation >> existing_files_check
+    existing_files_check >> [chicago_2023_task, chicago_2024_task, evanston_2023_task, evanston_2024_task]
+    [chicago_2023_task, chicago_2024_task, evanston_2023_task, evanston_2024_task] >> final_report
