@@ -2,6 +2,7 @@
 python-dotenv==1.1.1
 pandas==2.3.1
 numpy==2.3.1
+seaborn==0.13.2
 
 # AWS Integration
 boto3==1.39.4
@@ -21,3 +22,4 @@ lxml==5.4.0
 
 ## JupyterLab notebooks
 jupyterlab==4.4.3
+rpy2==3.6.1
