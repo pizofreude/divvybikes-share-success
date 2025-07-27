@@ -3,6 +3,7 @@ python-dotenv==1.1.1
 pandas==2.3.1
 numpy==2.3.1
 seaborn==0.13.2
+plotly==6.2.0
 
 # AWS Integration
 boto3==1.39.4
