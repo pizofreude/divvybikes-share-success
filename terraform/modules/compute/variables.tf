@@ -115,6 +115,13 @@ variable "log_retention_days" {
   default     = 30
 }
 
+# Enhanced VPC Routing Configuration
+variable "enhanced_vpc_routing" {
+  description = "Whether to enable enhanced VPC routing for Redshift workgroup. When enabled, all traffic goes through VPC, disabling public accessibility. Disable for development access."
+  type        = bool
+  default     = false
+}
+
 # Common Tags
 variable "common_tags" {
   description = "Common tags to apply to all resources"

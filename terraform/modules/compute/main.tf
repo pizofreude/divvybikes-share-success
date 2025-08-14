@@ -51,12 +51,13 @@ resource "aws_redshiftserverless_workgroup" "divvy" {
   base_capacity = var.base_capacity_rpus
 
   # Network configuration
-  enhanced_vpc_routing = true
-  publicly_accessible  = var.publicly_accessible
+  enhanced_vpc_routing   = var.enhanced_vpc_routing
+  publicly_accessible   = var.publicly_accessible
   
-  # Use networking from remote state
-  subnet_ids         = data.terraform_remote_state.networking.outputs.private_subnet_ids
-  security_group_ids = [data.terraform_remote_state.networking.outputs.redshift_security_group_id]
+  # For public access, don't specify subnet_ids or security_group_ids
+  # Only use VPC networking when enhanced_vpc_routing is enabled
+  subnet_ids         = var.enhanced_vpc_routing ? data.terraform_remote_state.networking.outputs.private_subnet_ids : null
+  security_group_ids = var.enhanced_vpc_routing ? [data.terraform_remote_state.networking.outputs.redshift_security_group_id] : null
 
   # Configuration parameters
   config_parameter {
