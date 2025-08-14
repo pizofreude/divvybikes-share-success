@@ -80,6 +80,12 @@ variable "publicly_accessible" {
   default     = true
 }
 
+variable "enhanced_vpc_routing" {
+  description = "Whether to enable enhanced VPC routing. When true, all traffic goes through VPC endpoints, blocking public access even if publicly_accessible=true. Set to false for development access."
+  type        = bool
+  default     = false
+}
+
 variable "enable_logging" {
   description = "Whether to enable CloudWatch logging"
   type        = bool
