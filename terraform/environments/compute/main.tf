@@ -68,9 +68,10 @@ module "compute" {
   usage_limit_breach_action = var.usage_limit_breach_action
 
   # Network & Security
-  publicly_accessible = var.publicly_accessible
-  enable_logging      = var.enable_logging
-  log_retention_days  = var.log_retention_days
+  publicly_accessible   = var.publicly_accessible
+  enhanced_vpc_routing   = var.enhanced_vpc_routing
+  enable_logging         = var.enable_logging
+  log_retention_days     = var.log_retention_days
 
   # Tags
   common_tags = var.common_tags
