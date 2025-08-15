@@ -71,6 +71,48 @@ resource "aws_iam_role_policy_attachment" "redshift_s3_attachment" {
   policy_arn = aws_iam_policy.redshift_s3_policy.arn
 }
 
+# IAM Policy for Redshift to access AWS Glue Data Catalog
+resource "aws_iam_policy" "redshift_glue_policy" {
+  name        = "${var.project_name}-${var.environment}-redshift-glue-policy"
+  description = "Policy for Redshift to access AWS Glue Data Catalog for external tables"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetDatabases",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:GetPartition",
+          "glue:GetPartitions",
+          "glue:BatchCreatePartition",
+          "glue:BatchDeletePartition",
+          "glue:BatchUpdatePartition",
+          "glue:CreateTable",
+          "glue:DeleteTable",
+          "glue:UpdateTable"
+        ]
+        Resource = [
+          "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:catalog",
+          "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:database/*",
+          "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/*/*"
+        ]
+      }
+    ]
+  })
+
+  tags = var.common_tags
+}
+
+# Attach Glue policy to Redshift role
+resource "aws_iam_role_policy_attachment" "redshift_glue_attachment" {
+  role       = aws_iam_role.redshift_role.name
+  policy_arn = aws_iam_policy.redshift_glue_policy.arn
+}
+
 # IAM Role for Airflow (local Docker) to access AWS services
 resource "aws_iam_role" "airflow_role" {
   count = var.create_airflow_role ? 1 : 0
@@ -114,12 +156,49 @@ resource "aws_iam_policy" "airflow_policy" {
           "s3:DeleteObject",
           "s3:ListBucket",
           "s3:GetBucketLocation",
-          "s3:ListBucketVersions"
+          "s3:ListBucketVersions",
+          "s3:GetBucketPolicy",
+          "s3:GetBucketPolicyStatus"
         ]
         Resource = concat(
           var.s3_bucket_arns,
           [for bucket_arn in var.s3_bucket_arns : "${bucket_arn}/*"]
         )
+      },
+      # AWS Glue Data Catalog access for external tables
+      {
+        Effect = "Allow"
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetDatabases",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:GetPartition",
+          "glue:GetPartitions",
+          "glue:BatchCreatePartition",
+          "glue:BatchDeletePartition",
+          "glue:BatchUpdatePartition",
+          "glue:CreateTable",
+          "glue:DeleteTable",
+          "glue:UpdateTable",
+          "glue:GetCatalogImportStatus"
+        ]
+        Resource = [
+          "arn:aws:glue:*:*:catalog",
+          "arn:aws:glue:*:*:database/*",
+          "arn:aws:glue:*:*:table/*/*"
+        ]
+      },
+      # IAM permissions for user management and policy access
+      {
+        Effect = "Allow"
+        Action = [
+          "iam:GetUser",
+          "iam:GetRole",
+          "iam:ListAttachedUserPolicies",
+          "iam:ListAttachedRolePolicies"
+        ]
+        Resource = "*"
       },
       # Redshift Serverless access
       {
