@@ -107,6 +107,18 @@ After successful completion, you should have:
 ### Issue: "Permission denied on S3"  
 **Solution**: Verify IAM role `divvybikes-dev-redshift-role` has S3 access
 
+### Issue: "AWS credentials invalid"
+**Solution**: Test and fix AWS access
+```bash
+cd /c/workspace/divvybikes-share-success/dbt_divvy/setup
+./test-aws-connection.sh
+```
+This script will:
+- ✅ Verify AWS credentials are valid
+- ✅ Test S3 bucket access permissions  
+- ✅ Show current AWS configuration
+- ✅ Provide specific troubleshooting guidance
+
 ### Issue: "dbt debug fails"
 **Solution**: Check `~/.dbt/profiles.yml` configuration
 
@@ -121,6 +133,10 @@ After successful completion, you should have:
 ## 📞 Quick Commands Reference
 
 ```bash
+# TROUBLESHOOTING: Test AWS connectivity
+cd /c/workspace/divvybikes-share-success/dbt_divvy/setup
+./test-aws-connection.sh
+
 # PHASE 1: External Tables Setup (one-time)
 cd /c/workspace/divvybikes-share-success/dbt_divvy/setup
 ./create_glue_tables.sh
