@@ -112,3 +112,34 @@ output "bucket_suffix" {
   description = "Random suffix used for bucket names"
   value       = random_string.bucket_suffix.result
 }
+
+# =============================================================================
+# Glue Data Catalog Outputs
+# =============================================================================
+
+# Glue Database for Bronze layer
+output "glue_bronze_database_name" {
+  description = "Name of the Glue database for Bronze layer external tables"
+  value       = aws_glue_catalog_database.bronze_db.name
+}
+
+output "glue_bronze_database_arn" {
+  description = "ARN of the Glue database for Bronze layer external tables"
+  value       = aws_glue_catalog_database.bronze_db.arn
+}
+
+# Glue Catalog Tables
+output "glue_divvy_trips_table_name" {
+  description = "Name of the Glue catalog table for divvy trips data"
+  value       = aws_glue_catalog_table.divvy_trips.name
+}
+
+output "glue_weather_data_table_name" {
+  description = "Name of the Glue catalog table for weather data"
+  value       = aws_glue_catalog_table.weather_data.name
+}
+
+output "glue_gbfs_stations_table_name" {
+  description = "Name of the Glue catalog table for GBFS stations data"
+  value       = aws_glue_catalog_table.gbfs_stations.name
+}
