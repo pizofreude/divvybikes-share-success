@@ -106,30 +106,19 @@ The module uses Terraform remote state to reference outputs from these dependenc
 - `redshift_database_name`: Default database name
 
 ### Generated Files
-- `init_database_script_path`: SQL script for schema creation
 - `airflow_connection_config_path`: JSON config for Airflow connections
 
 ## Generated Files
 
-The module creates two important files in the `generated/` directory:
+The module creates important configuration files in the `generated/` directory:
 
-### 1. Database Initialization Script (`init_database.sql`)
-```sql
--- Creates schemas for medallion architecture
-CREATE SCHEMA IF NOT EXISTS bronze;
-CREATE SCHEMA IF NOT EXISTS silver;
-CREATE SCHEMA IF NOT EXISTS gold;
+### Airflow Connection Configuration (`airflow_redshift_connection.json`)
 
--- Creates external schemas for S3 access
-CREATE EXTERNAL SCHEMA bronze_external
-FROM DATA CATALOG DATABASE 'divvy_bronze'
-IAM_ROLE 'arn:aws:iam::ACCOUNT:role/redshift-role';
-```
+This file contains the connection parameters for Airflow to connect to Redshift:
 
-### 2. Airflow Connection Config (`airflow_redshift_connection.json`)
 ```json
 {
-  "conn_id": "redshift_default",
+  "conn_id": "redshift_default", 
   "conn_type": "redshift",
   "host": "workgroup.region.redshift-serverless.amazonaws.com",
   "port": 5439,
@@ -137,6 +126,8 @@ IAM_ROLE 'arn:aws:iam::ACCOUNT:role/redshift-role';
   "login": "admin"
 }
 ```
+
+**Note**: Database schemas (bronze, silver, gold) are now created automatically by dbt during transformations. External tables are set up using the scripts in `dbt_divvy/setup/`.
 
 ## Cost Estimation
 
