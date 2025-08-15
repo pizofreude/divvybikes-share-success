@@ -57,17 +57,21 @@ airflow/
 
 Before starting Airflow, initialize your Redshift database with the generated schema:
 
-1. Connect to your Redshift database using your preferred SQL client:
-   - **Endpoint**: Use the endpoint from your Terraform outputs
-   - **Database**: `divvy`
-   - **Username**: `admin`
-   - **Password**: Use the password you set in your `.env` file
+### Step 1: Setup External Tables
 
-2. Run the initialization script:
-   ```sql
-   -- Copy and execute the contents of:
-   -- ../terraform/modules/compute/generated/init_database.sql
+**IMPORTANT**: External tables must be set up before starting Airflow.
+
+Follow the instructions in `dbt_divvy/SETUP_CHECKLIST.md`:
+
+1. Create Glue tables:
+   ```bash
+   cd /c/workspace/divvybikes-share-success/dbt_divvy/setup  
+   ./create_glue_tables.sh
    ```
+
+2. Create external schema in Redshift Query Editor v2:
+   - Run `debug_external_schema.sql`
+   - Run `add_all_partitions.sql`
 
 ### Step 2: Start Airflow
 
