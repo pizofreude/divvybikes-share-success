@@ -81,15 +81,12 @@ output "cloudwatch_log_group_name" {
   value       = var.enable_logging ? aws_cloudwatch_log_group.redshift_logs[0].name : null
 }
 
-# Generated Files
-output "init_database_script_path" {
-  description = "Path to the generated database initialization script"
-  value       = local_file.init_database_script.filename
-}
-
-output "airflow_connection_config_path" {
-  description = "Path to the generated Airflow connection configuration"
-  value       = local_file.airflow_connection_config.filename
+# Configuration for Manual Setup
+output "setup_information" {
+  description = "Information needed for manual setup process"
+  value = {
+    note = "Database initialization and Airflow connection setup are handled through the clean setup process in dbt_divvy/setup/. See setup documentation for configuration steps."
+  }
 }
 
 # Configuration for Airflow
