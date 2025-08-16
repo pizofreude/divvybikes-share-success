@@ -113,6 +113,37 @@ resource "aws_iam_role_policy_attachment" "redshift_glue_attachment" {
   policy_arn = aws_iam_policy.redshift_glue_policy.arn
 }
 
+# AWS Managed Policy Attachments for Redshift Role
+resource "aws_iam_role_policy_attachment" "redshift_data_full_access" {
+  role       = aws_iam_role.redshift_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftDataFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "redshift_full_access" {
+  role       = aws_iam_role.redshift_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "redshift_query_editor_full_access" {
+  role       = aws_iam_role.redshift_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftQueryEditorV2FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "redshift_glue_console_full_access" {
+  role       = aws_iam_role.redshift_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "redshift_cloudwatch_logs_full_access" {
+  role       = aws_iam_role.redshift_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "redshift_s3_full_access" {
+  role       = aws_iam_role.redshift_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 # IAM Role for Airflow (local Docker) to access AWS services
 resource "aws_iam_role" "airflow_role" {
   count = var.create_airflow_role ? 1 : 0
@@ -236,6 +267,43 @@ resource "aws_iam_role_policy_attachment" "airflow_policy_attachment" {
   policy_arn = aws_iam_policy.airflow_policy[0].arn
 }
 
+# AWS Managed Policy Attachments for Airflow Role
+resource "aws_iam_role_policy_attachment" "airflow_role_redshift_data_full_access" {
+  count      = var.create_airflow_role ? 1 : 0
+  role       = aws_iam_role.airflow_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftDataFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "airflow_role_redshift_full_access" {
+  count      = var.create_airflow_role ? 1 : 0
+  role       = aws_iam_role.airflow_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "airflow_role_redshift_query_editor_full_access" {
+  count      = var.create_airflow_role ? 1 : 0
+  role       = aws_iam_role.airflow_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftQueryEditorV2FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "airflow_role_glue_console_full_access" {
+  count      = var.create_airflow_role ? 1 : 0
+  role       = aws_iam_role.airflow_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "airflow_role_cloudwatch_logs_full_access" {
+  count      = var.create_airflow_role ? 1 : 0
+  role       = aws_iam_role.airflow_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "airflow_role_s3_full_access" {
+  count      = var.create_airflow_role ? 1 : 0
+  role       = aws_iam_role.airflow_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 # IAM User for local development (alternative to IAM role for Airflow)
 resource "aws_iam_user" "airflow_user" {
   count = var.create_airflow_user ? 1 : 0
@@ -252,6 +320,43 @@ resource "aws_iam_user_policy_attachment" "airflow_user_policy_attachment" {
   count      = var.create_airflow_user ? 1 : 0
   user       = aws_iam_user.airflow_user[0].name
   policy_arn = aws_iam_policy.airflow_policy[0].arn
+}
+
+# AWS Managed Policy Attachments for Airflow User
+resource "aws_iam_user_policy_attachment" "airflow_user_redshift_data_full_access" {
+  count      = var.create_airflow_user ? 1 : 0
+  user       = aws_iam_user.airflow_user[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftDataFullAccess"
+}
+
+resource "aws_iam_user_policy_attachment" "airflow_user_redshift_full_access" {
+  count      = var.create_airflow_user ? 1 : 0
+  user       = aws_iam_user.airflow_user[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftFullAccess"
+}
+
+resource "aws_iam_user_policy_attachment" "airflow_user_redshift_query_editor_full_access" {
+  count      = var.create_airflow_user ? 1 : 0
+  user       = aws_iam_user.airflow_user[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftQueryEditorV2FullAccess"
+}
+
+resource "aws_iam_user_policy_attachment" "airflow_user_glue_console_full_access" {
+  count      = var.create_airflow_user ? 1 : 0
+  user       = aws_iam_user.airflow_user[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"
+}
+
+resource "aws_iam_user_policy_attachment" "airflow_user_cloudwatch_logs_full_access" {
+  count      = var.create_airflow_user ? 1 : 0
+  user       = aws_iam_user.airflow_user[0].name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
+
+resource "aws_iam_user_policy_attachment" "airflow_user_s3_full_access" {
+  count      = var.create_airflow_user ? 1 : 0
+  user       = aws_iam_user.airflow_user[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
 # Access key for Airflow user (for local Docker environment)
