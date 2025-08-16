@@ -1,16 +1,16 @@
 # GitHub Pages Setup Instructions
 
-Follow these steps to publish your dbt documentation on GitHub Pages:
+Follow these steps to publish your dbt documentation on GitHub Pages using GitHub Actions:
 
-## 1. Enable GitHub Pages
+## 1. Enable GitHub Pages with GitHub Actions
 
 1. Go to your GitHub repository: `https://github.com/[YOUR_USERNAME]/divvybikes-share-success`
 2. Click on **Settings** tab
 3. Scroll down to **Pages** section in the left sidebar
 4. Under **Source**, select:
-   - **Deploy from a branch**
-   - Branch: `main`
-   - Folder: `/ (root)`
+   - **GitHub Actions** (NOT "Deploy from a branch")
+   
+   ⚠️ **Important**: Do NOT select "Deploy from a branch" - this conflicts with the automated GitHub Actions deployment.
 
 ## 2. Push Your Changes
 
@@ -18,13 +18,13 @@ Make sure you've committed and pushed all the recent changes:
 
 ```bash
 git add .
-git commit -m "Add GitHub Pages deployment for dbt documentation"
+git commit -m "Update GitHub Pages setup instructions for Actions deployment"
 git push origin main
 ```
 
 ## 3. Trigger the Workflow
 
-The GitHub Actions workflow will automatically trigger when you push changes to the `dbt_divvy/` directory. You can also manually trigger it:
+The GitHub Actions workflow will automatically trigger when you push changes to the `dbt_divvy/` directory or the workflow file itself. You can also manually trigger it:
 
 1. Go to **Actions** tab in your repository
 2. Click on **Deploy dbt Documentation to GitHub Pages**
@@ -32,35 +32,41 @@ The GitHub Actions workflow will automatically trigger when you push changes to 
 
 ## 4. Access Your Documentation
 
-Once the workflow completes (usually 2-5 minutes), your documentation will be available at:
+Once the workflow completes successfully (usually 2-5 minutes), your documentation will be available at:
 
 ```
 https://[YOUR_USERNAME].github.io/divvybikes-share-success/
 ```
 
-The landing page will show:
-- Project overview with key statistics
-- Direct link to dbt documentation
-- Data lineage and model relationships
+The site will display:
+- **Welcome page** with project overview and key statistics (335K+ records, 8 models, 97% test success)
+- **Direct link to dbt documentation** with interactive data lineage
+- **Professional portfolio showcase** of your data engineering pipeline
 
-## 5. Update README.md
+## 5. Troubleshooting
 
-The README.md has been updated with:
-- ✅ Project status badge showing "complete"
-- 📊 Prominent link to live documentation
-- 🎯 Key achievements and statistics
+### Issue: Site still shows README.md content
+**Solution**: Ensure GitHub Pages source is set to **"GitHub Actions"** (not "Deploy from a branch")
 
-## Troubleshooting
+### Issue: Workflow fails
+**Solution**: 
+1. Check the **Actions** tab for error details
+2. Ensure the `docs/` directory contains all necessary files
+3. Verify the workflow has proper permissions
 
-- **Workflow fails**: Check the Actions tab for error details
-- **404 error**: Ensure GitHub Pages is enabled and pointing to the right source
-- **Documentation not updating**: The workflow triggers on changes to `dbt_divvy/` directory
+### Issue: 404 error after deployment
+**Solution**: 
+1. Check that the workflow completed successfully
+2. Verify GitHub Pages is enabled in repository settings
+3. Wait a few minutes for DNS propagation
 
-## What's Included
+## 6. How the Deployment Works
 
-Your GitHub Pages site includes:
-- **Welcome page** (`welcome.html`) with project statistics
-- **Full dbt documentation** with data lineage graphs
-- **Model details** for all 8 models across Bronze → Silver → Gold → Marts
-- **Test results** showing 97% success rate (33/34 tests passed)
-- **Data quality insights** from 335K+ trip records
+The GitHub Actions workflow (`deploy-dbt-docs.yml`) automatically:
+
+1. **Triggers** on pushes to `dbt_divvy/**` directory or workflow changes
+2. **Copies** pre-built dbt documentation from `docs/` directory  
+3. **Uploads** the documentation as a GitHub Pages artifact
+4. **Deploys** to your GitHub Pages site with proper permissions
+
+This approach ensures your dbt documentation is automatically updated whenever you modify your dbt project or documentation files.
