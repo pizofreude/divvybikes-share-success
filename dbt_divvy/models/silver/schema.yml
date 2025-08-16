@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: trips_cleaned
+    description: "Cleaned and standardized trip data with quality filters applied"
+    columns:
+      - name: ride_id
+        description: "Unique identifier for each trip"
+        tests:
+          - not_null
+          - unique
+      - name: started_at
+        description: "Trip start timestamp"
+        tests:
+          - not_null
+      - name: ended_at
+        description: "Trip end timestamp"
+        tests:
+          - not_null
+      - name: ride_length_minutes
+        description: "Trip duration in minutes"
+        tests:
+          - not_null
+      - name: member_casual
+        description: "User type (member or casual)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['member', 'casual']
+      - name: start_station_id
+        description: "Starting station identifier"
+        tests:
+          - not_null
+      - name: end_station_id
+        description: "Ending station identifier"
+        tests:
+          - not_null
+
+  - name: weather_cleaned
+    description: "Cleaned weather data with derived features for analysis"
+    columns:
+      - name: weather_date
+        description: "Date of weather observation"
+        tests:
+          - not_null
+          - unique
+      - name: temperature_2m_mean
+        description: "Mean temperature at 2m height (°C)"
+        tests:
+          - not_null
+      - name: precipitation_sum
+        description: "Daily precipitation sum (mm)"
+        tests:
+          - not_null
+
+  - name: stations_cleaned
+    description: "Cleaned and standardized station information"
+    columns:
+      - name: station_id
+        description: "Unique station identifier"
+        tests:
+          - not_null
+          - unique
+      - name: station_name
+        description: "Station name"
+        tests:
+          - not_null
+      - name: station_lat
+        description: "Station latitude"
+        tests:
+          - not_null
+      - name: station_lng
+        description: "Station longitude"
+        tests:
+          - not_null
