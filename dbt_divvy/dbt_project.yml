@@ -1,0 +1,62 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'dbt_divvy'
+version: '1.0.0'
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'dbt_divvy'
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+# Variables
+vars:
+  redshift_spectrum_role: "arn:aws:iam::864899839546:role/divvybikes-dev-redshift-role"
+  # Add your actual IAM role ARN here
+  
+  # Pricing variables for revenue calculations
+  annual_membership_price: 143.90
+  day_pass_price: 18.10
+  overage_rate_per_minute: 0.19
+  lost_stolen_bike_fee: 250.00
+  sales_tax_rate: 0.1025  # 10.25% for Chicago
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+models:
+  dbt_divvy:
+    # Bronze layer - External tables (views)
+    bronze:
+      +materialized: view
+      +schema: bronze
+    
+    # Silver layer - Cleaned and standardized data (tables)
+    silver:
+      +materialized: table
+      +schema: silver
+      +pre-hook: "{{ create_schema_if_not_exists(this.schema) }}"
+    
+    # Gold layer - Business-ready aggregated data (tables)
+    gold:
+      +materialized: table
+      +schema: gold
+      +pre-hook: "{{ create_schema_if_not_exists(this.schema) }}"
+    
+    # Marts - Business-specific data marts (views)
+    marts:
+      +materialized: view
+      +schema: marts
