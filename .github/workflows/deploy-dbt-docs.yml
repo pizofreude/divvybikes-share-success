@@ -5,7 +5,9 @@ on:
     branches: [ main ]
     paths:
       - 'dbt_divvy/**'
+      - 'docs/**'
       - '.github/workflows/deploy-dbt-docs.yml'
+      - 'GITHUB_PAGES_SETUP.md'
   workflow_dispatch:
 
 permissions:
