@@ -34,15 +34,10 @@ output "redshift_database_name" {
   value       = module.compute.redshift_database_name
 }
 
-# Generated Files for Integration
-output "init_database_script_path" {
-  description = "Path to the generated database initialization script"
-  value       = module.compute.init_database_script_path
-}
-
-output "airflow_connection_config_path" {
-  description = "Path to the generated Airflow connection configuration"
-  value       = module.compute.airflow_connection_config_path
+# Setup Information for Manual Configuration
+output "setup_information" {
+  description = "Information needed for manual setup process"
+  value       = module.compute.setup_information
 }
 
 # Cost Information
