@@ -1,0 +1,99 @@
+version: 2
+
+sources:
+  - name: divvy_bronze
+    description: "Bronze layer external tables pointing to S3 data via Redshift Spectrum"
+    tables:
+      - name: divvy_trips
+        description: "Raw Divvy trip data from S3 Bronze layer"
+        external:
+          location: 's3://divvybikes-dev-bronze-96wb3c9c/divvy-trips/'
+          file_format: PARQUET
+          table_properties: "partition.year.type=string, partition.month.type=string"
+        columns:
+          - name: ride_id
+            description: "Unique identifier for each trip"
+            tests:
+              - not_null
+              - unique
+          - name: rideable_type
+            description: "Type of bike (classic_bike, electric_bike, docked_bike)"
+          - name: started_at
+            description: "Trip start timestamp"
+          - name: ended_at
+            description: "Trip end timestamp"
+          - name: start_station_name
+            description: "Name of starting station"
+          - name: start_station_id
+            description: "ID of starting station"
+          - name: end_station_name
+            description: "Name of ending station"
+          - name: end_station_id
+            description: "ID of ending station"
+          - name: start_lat
+            description: "Starting station latitude"
+          - name: start_lng
+            description: "Starting station longitude"
+          - name: end_lat
+            description: "Ending station latitude"
+          - name: end_lng
+            description: "Ending station longitude"
+          - name: member_casual
+            description: "User type (member or casual)"
+
+      - name: weather_data
+        description: "Historical weather data from Open-Meteo API"
+        external:
+          location: 's3://divvybikes-dev-bronze-96wb3c9c/weather-data/'
+          file_format: PARQUET
+          table_properties: "partition.year.type=string, partition.month.type=string"
+        columns:
+          - name: time
+            description: "Date of weather observation"
+          - name: temperature_2m_max
+            description: "Maximum temperature at 2m height (°C)"
+          - name: temperature_2m_min
+            description: "Minimum temperature at 2m height (°C)"
+          - name: temperature_2m_mean
+            description: "Mean temperature at 2m height (°C)"
+          - name: apparent_temperature_max
+            description: "Maximum apparent temperature (°C)"
+          - name: apparent_temperature_min
+            description: "Minimum apparent temperature (°C)"
+          - name: apparent_temperature_mean
+            description: "Mean apparent temperature (°C)"
+          - name: precipitation_sum
+            description: "Daily precipitation sum (mm)"
+          - name: rain_sum
+            description: "Daily rain sum (mm)"
+          - name: snowfall_sum
+            description: "Daily snowfall sum (cm)"
+          - name: wind_speed_10m_max
+            description: "Maximum wind speed at 10m height (km/h)"
+          - name: wind_gusts_10m_max
+            description: "Maximum wind gusts at 10m height (km/h)"
+          - name: wind_direction_10m_dominant
+            description: "Dominant wind direction (degrees)"
+          - name: cloud_cover_mean
+            description: "Mean cloud cover (%)"
+
+      - name: gbfs_stations
+        description: "GBFS station information data"
+        external:
+          location: 's3://divvybikes-dev-bronze-96wb3c9c/gbfs-data/'
+          file_format: PARQUET
+        columns:
+          - name: station_id
+            description: "Unique station identifier"
+          - name: name
+            description: "Station name"
+          - name: short_name
+            description: "Short station name"
+          - name: lat
+            description: "Station latitude"
+          - name: lon
+            description: "Station longitude"
+          - name: capacity
+            description: "Total station capacity"
+          - name: legacy_id
+            description: "Legacy station ID"
