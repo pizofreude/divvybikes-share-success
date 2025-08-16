@@ -33,6 +33,27 @@ chmod +x create_glue_tables.sh
 - Creates fresh external schema connected to Glue database
 - Verifies all 3 tables are visible
 
+### 4. `test-aws-connection.sh`
+**Purpose**: Diagnoses AWS connectivity and permission issues
+**When to use**: Run this BEFORE setup if you encounter AWS access problems
+**What it does**:
+- Tests AWS credentials via `aws sts get-caller-identity`
+- Verifies S3 bucket access permissions
+- Shows current AWS configuration details
+- Provides troubleshooting guidance
+
+```bash
+chmod +x test-aws-connection.sh
+./test-aws-connection.sh
+```
+
+**Expected Output**:
+```
+✅ AWS credentials are valid!
+✅ S3 access works!
+✅ Can access Divvy Bikes S3 bucket!
+```
+
 ### 3. `add_all_partitions.sql`
 **Purpose**: Adds all 72 partitions and tests data access  
 **When to use**: Run this THIRD in Redshift Query Editor
