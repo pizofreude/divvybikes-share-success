@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="ride_id", model=get_where_subquery(source('divvy_bronze', 'divvy_trips'))) }}

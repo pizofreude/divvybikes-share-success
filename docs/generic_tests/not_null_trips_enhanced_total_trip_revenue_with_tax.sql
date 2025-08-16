@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="total_trip_revenue_with_tax", model=get_where_subquery(ref('trips_enhanced'))) }}

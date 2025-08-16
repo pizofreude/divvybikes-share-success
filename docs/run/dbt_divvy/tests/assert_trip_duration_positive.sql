@@ -1,0 +1,22 @@
+
+    select
+      count(*) as failures,
+      count(*) != 0 as should_warn,
+      count(*) != 0 as should_error
+    from (
+      
+    
+  -- Test that ended_at is always after started_at
+-- Returns records where this condition is violated (should be 0)
+
+SELECT 
+    ride_id,
+    started_at,
+    ended_at,
+    ended_at - started_at AS duration
+FROM "divvy"."public_silver"."trips_cleaned"
+WHERE ended_at <= started_at
+  
+  
+      
+    ) dbt_internal_test

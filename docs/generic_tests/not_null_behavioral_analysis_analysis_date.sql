@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="analysis_date", model=get_where_subquery(ref('behavioral_analysis'))) }}

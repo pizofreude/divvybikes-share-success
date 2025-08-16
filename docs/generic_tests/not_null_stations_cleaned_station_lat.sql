@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="station_lat", model=get_where_subquery(ref('stations_cleaned'))) }}

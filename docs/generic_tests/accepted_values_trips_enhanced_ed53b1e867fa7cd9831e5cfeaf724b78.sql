@@ -1,0 +1,2 @@
+{{ config({}) }}
+{{ test_accepted_values(column_name="usage_profile", model=get_where_subquery(ref('trips_enhanced')), values=["High Usage Casual","Medium Usage Casual","Low Usage Casual","High Usage Member","Regular Member","Unknown"]) }}

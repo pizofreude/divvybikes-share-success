@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="total_trips", model=get_where_subquery(ref('station_performance'))) }}

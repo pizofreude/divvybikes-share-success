@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="usage_profile", model=get_where_subquery(ref('trips_enhanced'))) }}

@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="weather_date", model=get_where_subquery(ref('weather_cleaned'))) }}

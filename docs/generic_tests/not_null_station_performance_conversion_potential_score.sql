@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="conversion_potential_score", model=get_where_subquery(ref('station_performance'))) }}
