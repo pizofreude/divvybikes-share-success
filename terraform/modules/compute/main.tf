@@ -104,37 +104,6 @@ resource "aws_cloudwatch_log_group" "redshift_logs" {
   })
 }
 
-# Local file for database initialization scripts
-resource "local_file" "init_database_script" {
-  content = templatefile("${path.module}/templates/init_database.sql", {
-    bronze_bucket = data.terraform_remote_state.storage.outputs.bucket_names.bronze
-    silver_bucket = data.terraform_remote_state.storage.outputs.bucket_names.silver
-    gold_bucket   = data.terraform_remote_state.storage.outputs.bucket_names.gold
-    iam_role_arn  = data.terraform_remote_state.storage.outputs.redshift_role_arn
-    username      = var.redshift_admin_username
-  })
-  
-  filename = "${path.module}/generated/init_database.sql"
-
-  depends_on = [
-    aws_redshiftserverless_workgroup.divvy
-  ]
-}
-
-# Local file for Airflow connection configuration
-resource "local_file" "airflow_connection_config" {
-  content = templatefile("${path.module}/templates/airflow_redshift_connection.json", {
-    host      = aws_redshiftserverless_workgroup.divvy.endpoint[0].address
-    port      = aws_redshiftserverless_workgroup.divvy.endpoint[0].port
-    database  = var.redshift_database_name
-    username  = var.redshift_admin_username
-    workgroup = aws_redshiftserverless_workgroup.divvy.workgroup_name
-    namespace = aws_redshiftserverless_namespace.divvy.namespace_name
-  })
-  
-  filename = "${path.module}/generated/airflow_redshift_connection.json"
-
-  depends_on = [
-    aws_redshiftserverless_workgroup.divvy
-  ]
-}
+# Note: Database initialization and Airflow connection configuration
+# are now handled through the clean setup process in dbt_divvy/setup/
+# See setup documentation for manual connection configuration steps
