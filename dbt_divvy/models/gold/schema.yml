@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: trips_enhanced
+    description: "Comprehensive trip data with weather integration and revenue calculations"
+    columns:
+      - name: ride_id
+        description: "Unique identifier for each trip"
+        tests:
+          - not_null
+          - unique
+      - name: total_trip_revenue_with_tax
+        description: "Total revenue including tax for the trip"
+        tests:
+          - not_null
+      - name: usage_profile
+        description: "Usage pattern classification for conversion analysis"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High Usage Casual', 'Medium Usage Casual', 'Low Usage Casual', 'High Usage Member', 'Regular Member', 'Unknown']
+
+  - name: station_performance
+    description: "Station-level performance metrics and conversion potential analysis"
+    columns:
+      - name: station_id
+        description: "Unique station identifier"
+        tests:
+          - not_null
+          - unique
+      - name: conversion_potential_score
+        description: "Score indicating conversion potential (0-100)"
+        tests:
+          - not_null
+      - name: total_trips
+        description: "Total number of trips from this station"
+        tests:
+          - not_null
+
+  - name: behavioral_analysis
+    description: "Daily behavioral analysis comparing member vs casual usage patterns"
+    columns:
+      - name: analysis_date
+        description: "Date of analysis"
+        tests:
+          - not_null
+      - name: total_daily_trips
+        description: "Total trips for the day"
+        tests:
+          - not_null
