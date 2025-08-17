@@ -113,3 +113,111 @@ Terraform → Glue Database → AWS CLI → Glue Tables → External Schema → 
 ```
 
 This is the **clean, final solution** that actually works.
+
+---
+
+## 📊 dbt Pipeline Validation & Analytics Setup
+
+### Additional Utility Files for dbt Pipeline Management
+
+### 5. `check_dbt_tables.sql`
+
+**Purpose**: Validates dbt pipeline deployment success after transformation  
+**When to use**: Run this AFTER completing dbt pipeline execution  
+**What it does**:
+
+- Verifies all dbt-created schemas exist (`public_silver`, `public_gold`, `public_marts`)
+- Lists all deployed tables and views with ownership information
+- Validates record counts across all transformation layers
+- Provides comprehensive pipeline deployment verification
+
+**Usage in Redshift Query Editor v2**:
+
+```sql
+-- Run each section to verify different aspects:
+-- 1. Schema verification
+-- 2. Table/view inventory  
+-- 3. Record count validation
+-- 4. Data access confirmation
+```
+
+### 6. `grant_permissions.sql`
+
+**Purpose**: Enables full schema access for analytics work in Redshift Query Editor v2  
+**When to use**: Run this when switching from Federated to Database user connection  
+**What it does**:
+
+- Grants USAGE permissions on all dbt-created schemas
+- Enables SELECT access to all tables and views  
+- Resolves "permission denied" errors on silver/gold layers
+- Ensures full UI visibility in Redshift Query Editor v2
+
+**Critical for Analytics Work**:
+
+```sql
+-- Required when switching connection types:
+-- Federated User → Database User Name & Password
+-- Enables complete schema browser functionality
+-- Resolves permission denied errors
+```
+
+## 🔄 Complete Workflow: External Tables → dbt Pipeline → Analytics
+
+### Phase 1: External Tables Setup (Bronze Layer)
+
+```bash
+# Connection Type: Federated User (recommended)
+# Setup bronze layer access to S3 data
+
+1. ./create_glue_tables.sh
+2. Run debug_external_schema.sql
+3. Run add_all_partitions.sql
+```
+
+### Phase 2: dbt Pipeline Execution
+
+```bash
+# Connection Type: Either Federated or Database User
+# Transform bronze → silver → gold → marts
+
+1. dbt deps
+2. dbt debug  
+3. dbt run
+4. dbt test
+```
+
+### Phase 3: Analytics & Validation
+
+```bash
+# Connection Type: Database User Name & Password (required)
+# Validate deployment and enable analytics access
+
+1. Switch to Database user connection in Redshift Query Editor v2
+2. Run grant_permissions.sql (resolve permission issues)
+3. Run check_dbt_tables.sql (verify pipeline success) 
+4. Begin business analytics work
+```
+
+## 🔧 Connection Type Best Practices
+
+| Phase | Connection Type | Purpose | Files to Use |
+|-------|----------------|---------|--------------|
+| **Bronze Setup** | Federated User | S3 external table access | `create_glue_tables.sh`, `debug_external_schema.sql`, `add_all_partitions.sql` |
+| **dbt Development** | Either | Pipeline development | Standard dbt commands |
+| **Analytics** | Database User + Password | Full schema visibility | `grant_permissions.sql`, `check_dbt_tables.sql` |
+
+## 🚨 Troubleshooting Guide
+
+**Problem**: dbt pipeline shows success but tables not visible in Redshift UI  
+**Solution**:
+
+1. Switch to Database user connection
+2. Run `grant_permissions.sql`
+3. Run `check_dbt_tables.sql` to verify
+4. Refresh Redshift Query Editor v2
+
+**Problem**: Permission denied errors on silver/gold schemas  
+**Solution**: Run `grant_permissions.sql` with Database user connection
+
+**Problem**: Cannot verify if dbt pipeline worked correctly  
+**Solution**: Run `check_dbt_tables.sql` for comprehensive validation
