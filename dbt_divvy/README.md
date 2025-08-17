@@ -74,7 +74,96 @@ dbt docs generate
 dbt docs serve --port 8080
 ```
 
-## 📊 Business Questions Answered ✅
+## � Setup Utilities and Redshift Connection
+
+### **Setup Directory Overview**
+The `setup/` directory contains utility SQL scripts for dbt pipeline validation and Redshift permissions management:
+
+- **`check_dbt_tables.sql`**: Comprehensive validation script to verify dbt model deployment
+- **`grant_permissions.sql`**: Permission management for Redshift Query Editor v2 access
+
+### **Redshift Query Editor v2 Connection Types**
+
+#### **🔗 Federated User (for Bronze Layer Work)**
+- **Use Case**: Initial data transformation and external table access
+- **Access**: S3-based bronze layer data via Redshift Spectrum
+- **Limitation**: Silver/Gold layer tables may not appear in UI navigation panel
+- **Best For**: dbt development, external table management, spectrum queries
+
+#### **🔐 Database User Name and Password (for Analytics)**
+- **Use Case**: Business analytics and reporting on transformed data
+- **Access**: Full visibility of all schemas (public_silver, public_gold, public_marts)
+- **UI Display**: Complete schema browser with all tables/views visible
+- **Best For**: Data analysis, business intelligence, dashboard creation
+
+### **Setup Utility Scripts**
+
+#### **`check_dbt_tables.sql`** 📋
+Validation script to verify dbt pipeline deployment success:
+
+```sql
+-- Verify all dbt-created schemas exist
+-- Check table/view deployment status
+-- Validate record counts across all layers
+-- Confirm data pipeline integrity
+```
+
+**Usage:**
+1. Run in Redshift Query Editor v2 to verify dbt deployment
+2. Execute each query section to validate different pipeline aspects
+3. Use for troubleshooting missing tables or schema visibility issues
+
+#### **`grant_permissions.sql`** 🔑
+Permission management for full Redshift access:
+
+```sql
+-- Grant schema usage permissions
+-- Enable SELECT access to all tables/views
+-- Configure cross-schema query capabilities
+-- Resolve permission denied errors
+```
+
+**Usage:**
+1. Run when switching from Federated to Database user connection
+2. Execute to resolve "permission denied" errors on silver/gold layers
+3. Required for full schema visibility in Redshift Query Editor v2
+
+### **Connection Workflow Recommendations**
+
+1. **Development Phase** (Bronze Layer Setup):
+   ```
+   Connection Type: Federated User
+   Purpose: External table creation and bronze data access
+   Scope: S3 spectrum operations and initial dbt development
+   ```
+
+2. **Analytics Phase** (Silver/Gold Layer Access):
+   ```
+   Connection Type: Database User Name and Password
+   Purpose: Business analytics and transformed data exploration
+   Required: Run grant_permissions.sql after connection switch
+   Scope: Full schema access for business intelligence
+   ```
+
+3. **Troubleshooting Missing Tables**:
+   ```bash
+   # If tables don't appear in UI but dbt shows success:
+   # 1. Switch to Database user connection
+   # 2. Run grant_permissions.sql
+   # 3. Run check_dbt_tables.sql to verify deployment
+   # 4. Refresh Redshift Query Editor v2 browser
+   ```
+
+### **Common Issues and Solutions**
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Tables not visible in UI | Using Federated connection | Switch to Database user connection |
+| Permission denied errors | Missing schema permissions | Run `grant_permissions.sql` |
+| dbt deployment verification | Unclear pipeline status | Run `check_dbt_tables.sql` |
+| Schema browser empty | Connection type mismatch | Use Database user for analytics work |
+
+## �📊 Business Questions Answered ✅
 
 ### 1. **Behavioral Analysis** ✅
 - ✅ How do annual members and casual riders differ in trip duration, frequency, and timing?
