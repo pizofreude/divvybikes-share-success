@@ -39,6 +39,8 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
     - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
+    # Mount dbt project directory (one level up from airflow/)
+    - ${AIRFLOW_PROJ_DIR:-.}/../dbt_divvy:/opt/airflow/dbt_divvy
     # Mount AWS credentials if available
     - ~/.aws:/home/airflow/.aws:ro
   user: "${AIRFLOW_UID:-50000}:0"
