@@ -73,7 +73,8 @@ WITH cleaned_weather AS (
   FROM {{ source('divvy_bronze', 'weather_data') }}
   
   WHERE 
-    time IS NOT NULL
+    location = 'chicago'  -- Focus on Chicago weather for bike trip analysis
+    AND time IS NOT NULL
     AND temperature_2m_mean IS NOT NULL
     -- Basic data quality checks
     AND temperature_2m_max >= temperature_2m_min
