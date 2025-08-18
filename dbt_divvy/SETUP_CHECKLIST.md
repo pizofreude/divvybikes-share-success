@@ -20,19 +20,23 @@ chmod +x create_glue_tables.sh
 - [x] Copy and paste all SQL content ✅
 - [x] Execute - should show 3 tables: divvy_trips, weather_data, gbfs_stations ✅
 
-### Step 1.3: Add All Partitions
+### Step 1.3: Comprehensive Bronze Layer Setup
+**STREAMLINED**: Single script handles table creation, correct formats, and partitioning
 - [x] In Redshift Query Editor, open file: `setup/add_all_partitions.sql` ✅
-- [x] Copy and paste all SQL content (adds 72 partitions) ✅
-- [x] Execute - should return data counts:
+- [x] Copy and paste all SQL content (comprehensive setup: drops/recreates/partitions) ✅
+- [x] Execute - creates tables with correct file formats and adds 75 partitions (24 trips + 48 weather + 3 GBFS) ✅
+- [x] Verify all verification queries return data counts:
   - divvy_trips_2023: ~190,301 rows ✅
   - divvy_trips_2024: ~144,873 rows ✅  
   - weather data: ~31 rows per location/month ✅
+  - gbfs_stations: Station records for 2025 ✅
 
 ### Step 1.4: Verify Data Access
-The partition script includes test queries that should show:
+The comprehensive script includes verification queries that should show:
 - [x] Sample 2023 trip data ✅
 - [x] Sample 2024 trip data ✅
 - [x] Weather data for Chicago and Evanston ✅
+- [x] GBFS station information ✅
 
 ---
 
@@ -116,6 +120,22 @@ After successful completion, we achieved:
 
 ### Issue: "External table not found"
 **Solution**: Complete Phase 1 - External Tables Setup
+
+### Issue: "Spectrum Scan Error - invalid version number" on weather data
+**Root Cause**: All Bronze layer tables had incorrect file formats:
+- divvy_trips: CSV files (e.g., 202301-divvy-tripdata.csv) but defined as PARQUET
+- weather_data: CSV files (e.g., weather_data_chicago_2024_09.csv) but defined as PARQUET  
+- gbfs_stations: JSON files but defined as PARQUET
+
+**Solution**: The streamlined `setup/add_all_partitions.sql` script now handles this automatically:
+```sql
+-- Script includes comprehensive table creation with correct formats:
+-- divvy_trips: CSV with ROW FORMAT DELIMITED, FIELDS TERMINATED BY ','
+-- weather_data: CSV with ROW FORMAT DELIMITED, FIELDS TERMINATED BY ','  
+-- gbfs_stations: JSON with ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+```
+
+**Alternative**: If tables already exist with wrong formats, run the script anyway - it includes DROP TABLE IF EXISTS statements to recreate them correctly.
 
 ### Issue: "Permission denied on S3"  
 **Solution**: Verify IAM role `divvybikes-dev-redshift-role` has S3 access
