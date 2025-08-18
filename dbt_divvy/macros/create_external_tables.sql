@@ -1,5 +1,7 @@
+{% macro create_external_tables() %}
 -- Create external schema and tables for Bronze layer data
--- This should be run once to set up the external tables in Redshift Spectrum
+-- This macro should be called manually when needed: dbt run-operation create_external_tables
+-- Note: In practice, we use the setup/add_all_partitions.sql script for comprehensive setup
 
 -- Create external schema
 CREATE EXTERNAL SCHEMA IF NOT EXISTS divvy_bronze 
@@ -69,3 +71,5 @@ ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
 LOCATION 's3://divvybikes-dev-bronze-96wb3c9c/gbfs-data/'
 TABLE PROPERTIES ('numRows'='1000');
+
+{% endmacro %}
