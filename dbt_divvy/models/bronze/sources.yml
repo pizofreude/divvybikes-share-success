@@ -8,7 +8,7 @@ sources:
         description: "Raw Divvy trip data from S3 Bronze layer"
         external:
           location: 's3://divvybikes-dev-bronze-96wb3c9c/divvy-trips/'
-          file_format: PARQUET
+          file_format: CSV
           table_properties: "partition.year.type=string, partition.month.type=string"
         columns:
           - name: ride_id
@@ -45,8 +45,8 @@ sources:
         description: "Historical weather data from Open-Meteo API"
         external:
           location: 's3://divvybikes-dev-bronze-96wb3c9c/weather-data/'
-          file_format: PARQUET
-          table_properties: "partition.year.type=string, partition.month.type=string"
+          file_format: CSV
+          table_properties: "partition.location.type=string, partition.year.type=string, partition.month.type=string"
         columns:
           - name: time
             description: "Date of weather observation"
@@ -81,7 +81,8 @@ sources:
         description: "GBFS station information data"
         external:
           location: 's3://divvybikes-dev-bronze-96wb3c9c/gbfs-data/'
-          file_format: PARQUET
+          file_format: JSON
+          table_properties: "partition.endpoint.type=string, partition.year.type=string, partition.month.type=string, partition.day.type=string"
         columns:
           - name: station_id
             description: "Unique station identifier"
