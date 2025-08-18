@@ -24,9 +24,11 @@ CREATE EXTERNAL TABLE IF NOT EXISTS divvy_bronze.divvy_trips (
     member_casual VARCHAR(50)
 )
 PARTITIONED BY (year VARCHAR(4), month VARCHAR(2))
-STORED AS PARQUET
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
 LOCATION 's3://divvybikes-dev-bronze-96wb3c9c/divvy-trips/'
-TABLE PROPERTIES ('numRows'='1000000');
+TABLE PROPERTIES ('numRows'='1000000', 'skip.header.line.count'='1');
 
 -- Create external table for weather data
 CREATE EXTERNAL TABLE IF NOT EXISTS divvy_bronze.weather_data (
@@ -45,10 +47,12 @@ CREATE EXTERNAL TABLE IF NOT EXISTS divvy_bronze.weather_data (
     wind_direction_10m_dominant INTEGER,
     cloud_cover_mean INTEGER
 )
-PARTITIONED BY (year VARCHAR(4), month VARCHAR(2))
-STORED AS PARQUET
+PARTITIONED BY (location VARCHAR(20), year VARCHAR(4), month VARCHAR(2))
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
 LOCATION 's3://divvybikes-dev-bronze-96wb3c9c/weather-data/'
-TABLE PROPERTIES ('numRows'='1000');
+TABLE PROPERTIES ('numRows'='1000', 'skip.header.line.count'='1');
 
 -- Create external table for GBFS stations
 CREATE EXTERNAL TABLE IF NOT EXISTS divvy_bronze.gbfs_stations (
@@ -60,6 +64,8 @@ CREATE EXTERNAL TABLE IF NOT EXISTS divvy_bronze.gbfs_stations (
     capacity INTEGER,
     legacy_id VARCHAR(50)
 )
-STORED AS PARQUET
+PARTITIONED BY (endpoint VARCHAR(50), year VARCHAR(4), month VARCHAR(2), day VARCHAR(2))
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE
 LOCATION 's3://divvybikes-dev-bronze-96wb3c9c/gbfs-data/'
 TABLE PROPERTIES ('numRows'='1000');
