@@ -32,21 +32,42 @@ WITH conversion_metrics AS (
   UNION ALL
   
   SELECT
-    'Weekend vs Weekday' AS metric_period,
+    'Weekends' AS metric_period,
     
-    -- Weekend patterns
-    AVG(CASE WHEN is_weekend THEN COALESCE(casual_trips, 0) END) AS avg_daily_casual_trips,
-    AVG(CASE WHEN is_weekend THEN COALESCE(member_trips, 0) END) AS avg_daily_member_trips,
-    AVG(CASE WHEN is_weekend THEN casual_high_usage_percentage END) AS avg_casual_high_usage_pct,
+    -- Weekend patterns only
+    AVG(CASE WHEN is_weekend THEN COALESCE(casual_trips, 0) ELSE NULL END) AS avg_daily_casual_trips,
+    AVG(CASE WHEN is_weekend THEN COALESCE(member_trips, 0) ELSE NULL END) AS avg_daily_member_trips,
+    AVG(CASE WHEN is_weekend THEN casual_high_usage_percentage ELSE NULL END) AS avg_casual_high_usage_pct,
     
-    AVG(CASE WHEN is_weekend THEN COALESCE(casual_revenue, 0) END) AS avg_daily_casual_revenue,
-    AVG(CASE WHEN is_weekend THEN COALESCE(member_revenue, 0) END) AS avg_daily_member_revenue,
+    AVG(CASE WHEN is_weekend THEN COALESCE(casual_revenue, 0) ELSE NULL END) AS avg_daily_casual_revenue,
+    AVG(CASE WHEN is_weekend THEN COALESCE(member_revenue, 0) ELSE NULL END) AS avg_daily_member_revenue,
     
-    AVG(CASE WHEN is_weekend THEN casual_commute_percentage END) AS avg_casual_commute_pct,
-    AVG(CASE WHEN is_weekend THEN member_commute_percentage END) AS avg_member_commute_pct,
+    AVG(CASE WHEN is_weekend THEN casual_commute_percentage ELSE NULL END) AS avg_casual_commute_pct,
+    AVG(CASE WHEN is_weekend THEN member_commute_percentage ELSE NULL END) AS avg_member_commute_pct,
     
     COUNT(CASE WHEN is_weekend AND weather_suitability IN ('Good', 'Excellent') THEN 1 END) AS good_weather_days,
     COUNT(CASE WHEN is_weekend THEN 1 END) AS total_analysis_days
+
+  FROM {{ ref('behavioral_analysis') }}
+  
+  UNION ALL
+  
+  SELECT
+    'Weekdays' AS metric_period,
+    
+    -- Weekday patterns only
+    AVG(CASE WHEN NOT is_weekend THEN COALESCE(casual_trips, 0) ELSE NULL END) AS avg_daily_casual_trips,
+    AVG(CASE WHEN NOT is_weekend THEN COALESCE(member_trips, 0) ELSE NULL END) AS avg_daily_member_trips,
+    AVG(CASE WHEN NOT is_weekend THEN casual_high_usage_percentage ELSE NULL END) AS avg_casual_high_usage_pct,
+    
+    AVG(CASE WHEN NOT is_weekend THEN COALESCE(casual_revenue, 0) ELSE NULL END) AS avg_daily_casual_revenue,
+    AVG(CASE WHEN NOT is_weekend THEN COALESCE(member_revenue, 0) ELSE NULL END) AS avg_daily_member_revenue,
+    
+    AVG(CASE WHEN NOT is_weekend THEN casual_commute_percentage ELSE NULL END) AS avg_casual_commute_pct,
+    AVG(CASE WHEN NOT is_weekend THEN member_commute_percentage ELSE NULL END) AS avg_member_commute_pct,
+    
+    COUNT(CASE WHEN NOT is_weekend AND weather_suitability IN ('Good', 'Excellent') THEN 1 END) AS good_weather_days,
+    COUNT(CASE WHEN NOT is_weekend THEN 1 END) AS total_analysis_days
 
   FROM {{ ref('behavioral_analysis') }}
   
@@ -89,26 +110,31 @@ station_opportunities AS (
 
 SELECT 
   metric_period,
-  ROUND(avg_daily_casual_trips, 1) AS avg_casual_trips_per_day,
-  ROUND(avg_daily_member_trips, 1) AS avg_member_trips_per_day,
-  ROUND(avg_casual_high_usage_pct, 2) AS casual_high_usage_rate,
-  ROUND(avg_daily_casual_revenue, 2) AS avg_casual_revenue_per_day,
-  ROUND(avg_casual_commute_pct, 2) AS casual_commute_usage_rate,
-  ROUND(100.0 * good_weather_days / total_analysis_days, 1) AS good_weather_percentage,
+  ROUND(COALESCE(avg_daily_casual_trips, 0), 1) AS avg_casual_trips_per_day,
+  ROUND(COALESCE(avg_daily_member_trips, 0), 1) AS avg_member_trips_per_day,
+  ROUND(COALESCE(avg_casual_high_usage_pct, 0), 2) AS casual_high_usage_rate,
+  ROUND(COALESCE(avg_daily_casual_revenue, 0), 2) AS avg_casual_revenue_per_day,
+  ROUND(COALESCE(avg_casual_commute_pct, 0), 2) AS casual_commute_usage_rate,
+  ROUND(
+    CASE 
+      WHEN total_analysis_days > 0 THEN 100.0 * good_weather_days / total_analysis_days
+      ELSE 0 
+    END, 1
+  ) AS good_weather_percentage,
   
   -- Conversion opportunity indicators
   CASE 
-    WHEN avg_casual_high_usage_pct > 15 THEN 'High Conversion Potential'
-    WHEN avg_casual_high_usage_pct > 10 THEN 'Medium Conversion Potential'
-    WHEN avg_casual_high_usage_pct > 5 THEN 'Low Conversion Potential'
+    WHEN COALESCE(avg_casual_high_usage_pct, 0) > 15 THEN 'High Conversion Potential'
+    WHEN COALESCE(avg_casual_high_usage_pct, 0) > 10 THEN 'Medium Conversion Potential'
+    WHEN COALESCE(avg_casual_high_usage_pct, 0) > 5 THEN 'Low Conversion Potential'
     ELSE 'Minimal Conversion Potential'
   END AS conversion_assessment,
   
   -- Recommended actions
   CASE 
-    WHEN avg_casual_high_usage_pct > 15 AND avg_casual_commute_pct > 20 THEN 'Target Commuter Conversion Campaign'
-    WHEN avg_casual_high_usage_pct > 10 AND avg_casual_commute_pct < 10 THEN 'Target Leisure-to-Member Campaign'
-    WHEN avg_casual_high_usage_pct > 5 THEN 'General Awareness Campaign'
+    WHEN COALESCE(avg_casual_high_usage_pct, 0) > 15 AND COALESCE(avg_casual_commute_pct, 0) > 20 THEN 'Target Commuter Conversion Campaign'
+    WHEN COALESCE(avg_casual_high_usage_pct, 0) > 10 AND COALESCE(avg_casual_commute_pct, 0) < 10 THEN 'Target Leisure-to-Member Campaign'
+    WHEN COALESCE(avg_casual_high_usage_pct, 0) > 5 THEN 'General Awareness Campaign'
     ELSE 'Focus on Usage Growth First'
   END AS recommended_strategy
 
