@@ -32,8 +32,8 @@ WITH cleaned_trips AS (
     
     -- Member type standardization
     CASE 
-      WHEN LOWER(TRIM(member_casual)) = 'member' THEN 'member'
-      WHEN LOWER(TRIM(member_casual)) = 'casual' THEN 'casual'
+      WHEN LOWER(TRIM(REPLACE(member_casual, '"', ''))) = 'member' THEN 'member'
+      WHEN LOWER(TRIM(REPLACE(member_casual, '"', ''))) = 'casual' THEN 'casual'
       ELSE 'unknown'
     END AS member_casual,
     
@@ -79,7 +79,7 @@ WITH cleaned_trips AS (
     AND start_lng BETWEEN -89.0 AND -87.0
     AND end_lat BETWEEN 41.0 AND 43.0
     AND end_lng BETWEEN -89.0 AND -87.0
-    AND member_casual IN ('member', 'casual')
+    AND LOWER(TRIM(REPLACE(member_casual, '"', ''))) IN ('member', 'casual')
 )
 
 SELECT *
