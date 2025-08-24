@@ -1,0 +1,5 @@
+analysis_type,member_casual,route_type,trip_count,avg_duration,avg_distance,percentage_of_trips
+ROUTE_TYPE_ANALYSIS,casual,Point-to-Point,1,20.77,2.35,50.00
+ROUTE_TYPE_ANALYSIS,casual,Round Trip,1,25.83,nan,50.00
+ROUTE_TYPE_ANALYSIS,member,Point-to-Point,1,12.16,2.25,50.00
+ROUTE_TYPE_ANALYSIS,member,Round Trip,1,14.84,nan,50.00
