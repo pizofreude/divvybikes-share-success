@@ -1,0 +1,88 @@
+analysis_type,member_casual,location_name,end_location,location_type,usage_count,avg_duration_minutes,avg_distance_km,popularity_rank,conversion_potential
+CONVERSION_TARGETS,casual,,,High-Potential Station,370791,0,0,1,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Streeter Dr & Grand Ave""",,High-Potential Station,50270,0,0,2,High Conversion Potential
+CONVERSION_TARGETS,casual,"""DuSable Lake Shore Dr & Monroe St""",,High-Potential Station,33484,0,0,3,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Michigan Ave & Oak St""",,High-Potential Station,24738,0,0,4,High Conversion Potential
+CONVERSION_TARGETS,casual,"""DuSable Lake Shore Dr & North Blvd""",,High-Potential Station,22668,0,0,5,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Millennium Park""",,High-Potential Station,22179,0,0,6,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Shedd Aquarium""",,High-Potential Station,20747,0,0,7,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Dusable Harbor""",,High-Potential Station,18176,0,0,8,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Theater on the Lake""",,High-Potential Station,16562,0,0,9,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Michigan Ave & 8th St""",,High-Potential Station,13322,0,0,10,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Michigan Ave & 8th St""",,High-Potential Station,13322,0,0,11,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Adler Planetarium""",,High-Potential Station,12672,0,0,12,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Indiana Ave & Roosevelt Rd""",,High-Potential Station,11808,0,0,13,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Buckingham Fountain""",,High-Potential Station,11353,0,0,14,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Wells St & Concord Ln""",,High-Potential Station,11283,0,0,15,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Montrose Harbor""",,High-Potential Station,11047,0,0,16,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Clark St & Elm St""",,High-Potential Station,10698,0,0,17,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Wabash Ave & Grand Ave""",,High-Potential Station,10631,0,0,18,High Conversion Potential
+CONVERSION_TARGETS,casual,"""New St & Illinois St""",,High-Potential Station,10507,0,0,19,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Michigan Ave & Washington St""",,High-Potential Station,10498,0,0,20,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Clark St & Armitage Ave""",,High-Potential Station,10332,0,0,21,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Clark St & Lincoln Ave""",,High-Potential Station,10313,0,0,22,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Wells St & Elm St""",,High-Potential Station,9931,0,0,23,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Field Museum""",,High-Potential Station,9734,0,0,24,High Conversion Potential
+CONVERSION_TARGETS,casual,"""LaSalle St & Illinois St""",,High-Potential Station,9637,0,0,25,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Michigan Ave & Lake St""",,High-Potential Station,9284,0,0,26,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Columbus Dr & Randolph St""",,High-Potential Station,9272,0,0,27,High Conversion Potential
+CONVERSION_TARGETS,casual,"""McClurg Ct & Ohio St""",,High-Potential Station,8763,0,0,28,High Conversion Potential
+CONVERSION_TARGETS,casual,"""DuSable Lake Shore Dr & Diversey Pkwy""",,High-Potential Station,8667,0,0,29,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Wells St & Huron St""",,High-Potential Station,8387,0,0,30,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Wilton Ave & Belmont Ave""",,High-Potential Station,8161,0,0,31,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""DuSable Lake Shore Dr & Belmont Ave""",,High-Potential Station,8022,0,0,32,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Wells St & Hubbard St""",,High-Potential Station,7726,0,0,33,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Dearborn Pkwy & Delaware Pl""",,High-Potential Station,7516,0,0,34,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Wabash Ave & Roosevelt Rd""",,High-Potential Station,7507,0,0,35,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Desplaines St & Kinzie St""",,High-Potential Station,7392,0,0,36,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Halsted St & Fulton St""",,High-Potential Station,7369,0,0,37,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Broadway & Barry Ave""",,High-Potential Station,7341,0,0,38,Medium Conversion Potential
+CONVERSION_TARGETS,casual,"""Clark St & Newport St""",,High-Potential Station,7206,0,0,39,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Clark St & Newport St""",,High-Potential Station,7206,0,0,40,High Conversion Potential
+CONVERSION_TARGETS,casual,"""DuSable Lake Shore Dr & Wellington Ave""",,High-Potential Station,7199,0,0,41,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Cityfront Plaza Dr & Pioneer Ct""",,High-Potential Station,7180,0,0,42,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Fairbanks Ct & Grand Ave""",,High-Potential Station,7172,0,0,43,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Lincoln Park Conservatory""",,High-Potential Station,7158,0,0,44,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Lakeview Ave & Fullerton Pkwy""",,High-Potential Station,7134,0,0,45,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Wells St & Evergreen Ave""",,High-Potential Station,7045,0,0,46,High Conversion Potential
+CONVERSION_TARGETS,casual,"""Sheffield Ave & Waveland Ave""",,High-Potential Station,6983,0,0,47,High Conversion Potential
+TOP_ROUTES,casual,"""DuSable Lake Shore Dr & Monroe St""","""Streeter Dr & Grand Ave""",Route,5265,26.07,1.32,1,
+TOP_ROUTES,casual,"""Streeter Dr & Grand Ave""","""DuSable Lake Shore Dr & Monroe St""",Route,2704,27.59,1.32,2,
+TOP_ROUTES,casual,"""Streeter Dr & Grand Ave""",,Route,2416,29.13,2.74,3,
+TOP_ROUTES,casual,"""Shedd Aquarium""","""Streeter Dr & Grand Ave""",Route,2395,32.9,2.8,4,
+TOP_ROUTES,casual,"""Dusable Harbor""","""Streeter Dr & Grand Ave""",Route,2377,26.6,0.59,5,
+TOP_ROUTES,casual,,"""Streeter Dr & Grand Ave""",Route,2286,26.02,2.99,6,
+TOP_ROUTES,casual,"""Shedd Aquarium""","""DuSable Lake Shore Dr & Monroe St""",Route,2250,20.04,1.53,7,
+TOP_ROUTES,casual,"""Streeter Dr & Grand Ave""","""DuSable Lake Shore Dr & North Blvd""",Route,2138,24.32,2.48,8,
+TOP_ROUTES,casual,"""Streeter Dr & Grand Ave""","""Millennium Park""",Route,2027,31.56,1.6,9,
+TOP_ROUTES,casual,"""DuSable Lake Shore Dr & Monroe St""","""Shedd Aquarium""",Route,1989,21.14,1.53,10,
+TOP_ROUTES,member,"""State St & 33rd St""","""Calumet Ave & 33rd St""",Route,5587,3.99,0.65,1,
+TOP_ROUTES,member,"""Calumet Ave & 33rd St""","""State St & 33rd St""",Route,5504,4.21,0.66,2,
+TOP_ROUTES,member,"""Ellis Ave & 60th St""","""University Ave & 57th St""",Route,3988,5.12,0.72,3,
+TOP_ROUTES,member,"""Ellis Ave & 60th St""","""Ellis Ave & 55th St""",Route,3976,5.37,1.02,4,
+TOP_ROUTES,member,"""University Ave & 57th St""","""Ellis Ave & 60th St""",Route,3942,5,0.72,5,
+TOP_ROUTES,member,"""Ellis Ave & 55th St""","""Ellis Ave & 60th St""",Route,3837,5.1,1.02,6,
+TOP_ROUTES,member,,"""Clinton St & Washington Blvd""",Route,2900,10.17,2.55,7,
+TOP_ROUTES,member,,"""Kingsbury St & Kinzie St""",Route,2764,9.12,2.17,8,
+TOP_ROUTES,member,,"""Ravenswood Ave & Lawrence Ave""",Route,2663,8.84,2.18,9,
+TOP_ROUTES,member,"""Kingsbury St & Kinzie St""",,Route,2610,9.05,1.87,10,
+TOP_STATIONS,casual,,,Station,370791,15.56,2.51,1,
+TOP_STATIONS,casual,"""Streeter Dr & Grand Ave""",,Station,50270,57.8,6.1,2,
+TOP_STATIONS,casual,"""DuSable Lake Shore Dr & Monroe St""",,Station,33484,56.79,5.83,3,
+TOP_STATIONS,casual,"""Michigan Ave & Oak St""",,Station,24738,52.45,5.51,4,
+TOP_STATIONS,casual,"""DuSable Lake Shore Dr & North Blvd""",,Station,22668,42.24,5.37,5,
+TOP_STATIONS,casual,"""Millennium Park""",,Station,22179,50.46,nan,6,
+TOP_STATIONS,casual,"""Shedd Aquarium""",,Station,20747,56.34,5.5,7,
+TOP_STATIONS,casual,"""Dusable Harbor""",,Station,18176,51.79,5.64,8,
+TOP_STATIONS,casual,"""Theater on the Lake""",,Station,16562,42.79,5.23,9,
+TOP_STATIONS,casual,"""Michigan Ave & 8th St""",,Station,13322,42.26,4.91,10,
+TOP_STATIONS,member,,,Station,634258,14.55,2.97,1,
+TOP_STATIONS,member,"""Kingsbury St & Kinzie St""",,Station,29212,18.96,3.87,2,
+TOP_STATIONS,member,"""Clinton St & Washington Blvd""",,Station,27439,20.45,4.35,3,
+TOP_STATIONS,member,"""Clinton St & Madison St""",,Station,24573,20.59,4.3,4,
+TOP_STATIONS,member,"""Clark St & Elm St""",,Station,24425,23.58,4.62,5,
+TOP_STATIONS,member,"""Wells St & Concord Ln""",,Station,20488,20.83,4.39,6,
+TOP_STATIONS,member,"""Wells St & Elm St""",,Station,20217,20.93,4.17,7,
+TOP_STATIONS,member,"""Clinton St & Jackson Blvd""",,Station,20048,20.85,4.35,8,
+TOP_STATIONS,member,"""Dearborn St & Erie St""",,Station,19196,23.39,4.48,9,
+TOP_STATIONS,member,"""Canal St & Madison St""",,Station,18901,21.67,4.3,10,
