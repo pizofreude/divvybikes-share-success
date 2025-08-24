@@ -297,6 +297,9 @@ downloads/
 !data/*.md
 !data/examples/
 
+# Except data on gold and mart layers
+!data/gold/
+!data/marts/
 # Redshift credentials and connection files
 redshift_credentials.yaml
 redshift_config.json
