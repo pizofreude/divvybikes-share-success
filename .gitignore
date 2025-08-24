@@ -291,7 +291,6 @@ config
 *.gz
 *.tar
 *.7z
-data/
 downloads/
 # Except data dictionaries and small example files
 !data/*.md
