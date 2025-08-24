@@ -1,0 +1,17 @@
+member_casual,trip_year,duration_category,trip_count,percentage_of_user_trips,avg_duration_minutes,median_duration_minutes,previous_year_count,yoy_growth_percentage
+casual,2023,Short (≤10 min),818200,40.92,6.1,6.17,,
+casual,2023,Medium (10-30 min),850349,42.52,17.19,16.0,,
+casual,2023,Long (30-60 min),222084,11.11,41.11,39.32,,
+casual,2023,Extra Long (>60 min),109082,5.45,122.63,85.6,,
+casual,2024,Short (≤10 min),831082,39.95,6.12,6.1899999999999995,818200,1.57
+casual,2024,Medium (10-30 min),884834,42.54,17.22,16.05,850349,4.06
+casual,2024,Long (30-60 min),242752,11.67,41.230000000000004,39.53,222084,9.31
+casual,2024,Extra Long (>60 min),121456,5.84,119.52000000000001,85.53,109082,11.34
+member,2023,Short (≤10 min),2026240,56.86,5.71,5.62,,
+member,2023,Medium (10-30 min),1333511,37.42,16.4,15.05,,
+member,2023,Long (30-60 min),178661,5.01,38.37,36.58,,
+member,2023,Extra Long (>60 min),24925,0.70,151.32999999999998,86.47,,
+member,2024,Short (≤10 min),2049871,56.30,5.7299999999999995,5.65,2026240,1.17
+member,2024,Medium (10-30 min),1378642,37.86,16.380000000000003,15.030000000000001,1333511,3.38
+member,2024,Long (30-60 min),188213,5.17,38.54,36.739999999999995,178661,5.35
+member,2024,Extra Long (>60 min),24538,0.67,145.95999999999998,83.17,24925,-1.55
