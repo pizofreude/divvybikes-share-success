@@ -1,0 +1,55 @@
+analysis_type,station_name,recommended_strategy,stations_in_category,casual_trips,member_trips,total_trips,casual_percentage,geographic_opportunity_score,casual_trips_per_active_day,avg_casual_duration,casual_weekend_percentage,campaign_priority,conservative_conversion_estimate,optimistic_conversion_estimate,estimated_monthly_revenue_impact
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Severe Under-Penetration (70%+ casual),Medium Investment Zone,7,156436,46714,203150,76.92,95,64.60,32.8485714285714,44.04,Cluster Analysis,23465,39109,2346540
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,High Under-Penetration (60-69% casual),High Investment Zone,11,85154,45226,130380,64.61,85,23.89,37.5554545454545,44.77,Cluster Analysis,12773,21289,1277310
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Moderate Under-Penetration (50-59% casual),High Investment Zone,21,85231,66358,151589,55.24,75,13.60,26.82,37.83,Cluster Analysis,12785,21308,1278465
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,High Under-Penetration (60-69% casual),Low Investment Zone,2,909,489,1398,65.02,75,2.26,17.695,31.19,Cluster Analysis,136,227,13635
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Low Under-Penetration (40-49% casual),High Investment Zone,92,294325,386335,680660,43.83,65,9.79,24.5434782608696,36.68,Cluster Analysis,44149,73581,4414875
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Moderate Under-Penetration (50-59% casual),Medium Investment Zone,12,2899,2518,5417,53.52,65,2.59,23.895,35.29,Cluster Analysis,435,725,43485
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,High Under-Penetration (60-69% casual),Low Investment Zone,4,924,473,1397,66.32,65,1.79,31.925,38.31,Cluster Analysis,139,231,13860
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Severe Under-Penetration (70%+ casual),Low Investment Zone,3,742,229,971,77.25,65,2.00,34.7366666666667,36.65,Cluster Analysis,111,186,11130
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Good Member Penetration (<40% casual),High Investment Zone,112,599779,1023932,1623711,37.23,55,15.50,21.0261607142857,35.62,Cluster Analysis,89967,149945,8996685
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,High Under-Penetration (60-69% casual),Medium Investment Zone,21,2986,1624,4610,64.71,55,1.40,20.5519047619048,27.06,Cluster Analysis,448,747,44790
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Low Under-Penetration (40-49% casual),Medium Investment Zone,16,2311,3010,5321,43.61,55,1.41,23.17625,29.59,Cluster Analysis,347,578,34665
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Moderate Under-Penetration (50-59% casual),Targeted Investment Zone,15,1928,1624,3552,54.46,55,1.45,27.3653333333333,32.15,Cluster Analysis,289,482,28920
+GEOGRAPHIC_OPPORTUNITY_SUMMARY,Severe Under-Penetration (70%+ casual),Targeted Investment Zone,14,1811,390,2201,82.43,55,1.38,21.8214285714286,30.40,Cluster Analysis,272,453,27165
+HIGH_OPPORTUNITY_STATIONS,"""Streeter Dr & Grand Ave""",High-Intensity Area - Cost Savings Focus,1,50270,14757,65027,77.31,95,142.01,35.45,45.60,Immediate Priority,7541,12568,150810
+HIGH_OPPORTUNITY_STATIONS,"""DuSable Lake Shore Dr & Monroe St""",High-Intensity Area - Cost Savings Focus,1,33484,9729,43213,77.49,95,96.22,34.49,48.10,Immediate Priority,5023,8371,100452
+HIGH_OPPORTUNITY_STATIONS,"""Shedd Aquarium""",High-Intensity Area - Cost Savings Focus,1,20747,4756,25503,81.35,95,58.77,29.6,41.77,Immediate Priority,3112,5187,62241
+HIGH_OPPORTUNITY_STATIONS,"""Dusable Harbor""",High-Intensity Area - Cost Savings Focus,1,18176,6631,24807,73.27,95,53.93,34.02,45.73,Immediate Priority,2726,4544,54528
+HIGH_OPPORTUNITY_STATIONS,"""Adler Planetarium""",High-Intensity Area - Cost Savings Focus,1,12672,5031,17703,71.58,95,38.17,33.17,41.21,Immediate Priority,1901,3168,38016
+HIGH_OPPORTUNITY_STATIONS,"""Buckingham Fountain""",High-Intensity Area - Cost Savings Focus,1,11353,3634,14987,75.75,95,34.51,34.26,43.03,Immediate Priority,1703,2838,34059
+HIGH_OPPORTUNITY_STATIONS,"""Field Museum""",High-Intensity Area - Cost Savings Focus,1,9734,2176,11910,81.73,95,28.63,28.95,42.89,Immediate Priority,1460,2434,29202
+HIGH_OPPORTUNITY_STATIONS,"""Michigan Ave & Oak St""",High-Intensity Area - Cost Savings Focus,1,24738,14293,39031,63.38,85,71.29,37.34,45.31,Immediate Priority,3711,6185,74214
+HIGH_OPPORTUNITY_STATIONS,"""Millennium Park""",High-Intensity Area - Cost Savings Focus,1,22179,10383,32562,68.11,85,62.83,38.15,44.00,Immediate Priority,3327,5545,66537
+HIGH_OPPORTUNITY_STATIONS,"""Michigan Ave & 8th St""",High-Intensity Area - Cost Savings Focus,1,13322,7066,20388,65.34,85,38.39,32.26,43.09,Immediate Priority,1998,3331,39966
+HIGH_OPPORTUNITY_STATIONS,"""McCormick Place""",High-Intensity Area - Cost Savings Focus,1,5712,2508,8220,69.49,85,19.43,33.82,40.28,Immediate Priority,857,1428,17136
+HIGH_OPPORTUNITY_STATIONS,"""Streeter Dr/Grand Ave""",High-Intensity Area - Cost Savings Focus,1,5333,2589,7922,67.32,85,16.93,32.87,44.38,Immediate Priority,800,1333,15999
+HIGH_OPPORTUNITY_STATIONS,"""Michigan Ave & Ida B Wells Dr""",High-Intensity Area - Cost Savings Focus,1,4399,2849,7248,60.69,85,13.97,32.88,41.96,Immediate Priority,660,1100,13197
+HIGH_OPPORTUNITY_STATIONS,"""Cannon Dr & Fullerton Ave""",High-Intensity Area - Cost Savings Focus,1,3691,2425,6116,60.35,85,12.86,38.85,48.52,Immediate Priority,554,923,11073
+HIGH_OPPORTUNITY_STATIONS,"""Griffin Museum of Science and Industry""",High-Intensity Area - Cost Savings Focus,1,3000,1570,4570,65.65,85,14.35,46.9,43.03,Immediate Priority,450,750,9000
+HIGH_OPPORTUNITY_STATIONS,"""Wells St & 19th St""",High-Intensity Area - Cost Savings Focus,1,1395,703,2098,66.49,85,5.69,27.96,46.52,Immediate Priority,209,349,4185
+HIGH_OPPORTUNITY_STATIONS,"""63rd St Beach""",High-Intensity Area - Cost Savings Focus,1,834,477,1311,63.62,85,3.99,41.91,48.92,Immediate Priority,125,209,2502
+HIGH_OPPORTUNITY_STATIONS,"""Cottage Grove Ave & Oakwood Blvd""",High-Intensity Area - Cost Savings Focus,1,551,363,914,60.28,85,3.15,50.17,46.46,Immediate Priority,83,138,1653
+HIGH_OPPORTUNITY_STATIONS,"""DuSable Lake Shore Dr & North Blvd""",High-Intensity Area - Cost Savings Focus,1,22668,16254,38922,58.24,75,67.26,27.9,46.30,High Priority,3400,5667,68004
+HIGH_OPPORTUNITY_STATIONS,"""Theater on the Lake""",High-Intensity Area - Cost Savings Focus,1,16562,12691,29253,56.62,75,50.80,30.2,48.56,High Priority,2484,4141,49686
+HIGH_OPPORTUNITY_STATIONS,"""Montrose Harbor""",High-Intensity Area - Cost Savings Focus,1,11047,7655,18702,59.07,75,37.20,35.61,46.96,High Priority,1657,2762,33141
+HIGH_OPPORTUNITY_STATIONS,"""Lincoln Park Conservatory""",High-Intensity Area - Cost Savings Focus,1,7158,6027,13185,54.29,75,22.65,33.5,49.73,High Priority,1074,1790,21474
+HIGH_OPPORTUNITY_STATIONS,"""Michigan Ave & Jackson Blvd""",High-Intensity Area - Cost Savings Focus,1,6944,5958,12902,53.82,75,20.42,33.08,38.82,High Priority,1042,1736,20832
+HIGH_OPPORTUNITY_STATIONS,"""Michigan Ave & Pearson St""",High-Intensity Area - Cost Savings Focus,1,5395,5104,10499,51.39,75,15.96,34.45,39.35,High Priority,809,1349,16185
+HIGH_OPPORTUNITY_STATIONS,"""Lakefront Trail & Wilson Ave""",High-Intensity Area - Cost Savings Focus,1,4085,3302,7387,55.30,75,14.18,42.89,46.49,High Priority,613,1021,12255
+HIGH_OPPORTUNITY_STATIONS,"""Calumet Ave & 21st St""",High-Intensity Area - Cost Savings Focus,1,2718,2244,4962,54.78,75,10.18,34.26,41.87,High Priority,408,680,8154
+HIGH_OPPORTUNITY_STATIONS,"""Wentworth Ave & Cermak Rd""",High-Intensity Area - Cost Savings Focus,1,2512,2074,4586,54.78,75,8.08,31.11,45.02,High Priority,377,628,7536
+HIGH_OPPORTUNITY_STATIONS,"""Evanston Civic Center""",High-Intensity Area - Cost Savings Focus,1,889,693,1582,56.19,75,3.15,22.66,27.45,High Priority,133,222,2667
+HIGH_OPPORTUNITY_STATIONS,"""Museum of Science and Industry""",High-Intensity Area - Cost Savings Focus,1,736,492,1228,59.93,75,7.51,43.93,52.72,High Priority,110,184,2208
+HIGH_OPPORTUNITY_STATIONS,"""Clinton St & Polk St""",General Market - Mixed Messaging,1,619,590,1209,51.20,75,2.56,21.18,31.18,High Priority,93,155,1857
+HIGH_OPPORTUNITY_STATIONS,"""Francisco Ave & Bloomingdale Ave""",General Market - Mixed Messaging,1,608,601,1209,50.29,75,2.33,13.21,30.92,High Priority,91,152,1824
+HIGH_OPPORTUNITY_STATIONS,"""Central St & Girard Ave""",General Market - Mixed Messaging,1,569,486,1055,53.93,75,2.43,27.25,38.66,High Priority,85,142,1707
+HIGH_OPPORTUNITY_STATIONS,"""Dodge Ave & Church St""",General Market - Mixed Messaging,1,498,457,955,52.15,75,2.19,18.49,22.49,High Priority,75,125,1494
+HIGH_OPPORTUNITY_STATIONS,"""Kedzie Ave & 48th Pl""",General Market - Mixed Messaging,1,470,229,699,67.24,75,2.32,17.64,35.74,High Priority,71,118,1410
+HIGH_OPPORTUNITY_STATIONS,"""Pulaski Rd & 51st St""",General Market - Mixed Messaging,1,439,260,699,62.80,75,2.20,17.75,26.65,High Priority,66,110,1317
+HIGH_OPPORTUNITY_STATIONS,"""Elmwood Ave & Austin St""",General Market - Mixed Messaging,1,418,337,755,55.36,75,2.00,22.59,27.27,High Priority,63,105,1254
+HIGH_OPPORTUNITY_STATIONS,"""Prairie Ave & 43rd St""",General Market - Mixed Messaging,1,403,281,684,58.92,75,2.04,22.45,34.49,High Priority,60,101,1209
+HIGH_OPPORTUNITY_STATIONS,"""Elston Ave & Henderson St""",General Market - Mixed Messaging,1,380,345,725,52.41,75,1.72,12.09,23.68,High Priority,57,95,1140
+HIGH_OPPORTUNITY_STATIONS,"""Central Park Ave & Ogden Ave""",General Market - Mixed Messaging,1,358,280,638,56.11,75,1.80,18.45,33.52,High Priority,54,90,1074
+HIGH_OPPORTUNITY_STATIONS,"""Wrigley Events Parking Area""",High-Intensity Area - Cost Savings Focus,1,341,252,593,57.50,75,9.22,14.81,26.69,High Priority,51,85,1023
+HIGH_OPPORTUNITY_STATIONS,"""Conservatory Dr & Lake St""",General Market - Mixed Messaging,1,323,235,558,57.89,75,1.92,23.11,42.41,High Priority,48,81,969
