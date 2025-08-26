@@ -1,0 +1,652 @@
+---
+title: "Divvy Bikes Business Intelligence Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    theme: united
+    navbar:
+      - { title: "Executive Summary", href: "#executive-summary", align: left }
+      - { title: "User Behavior", href: "#user-behavior", align: left }
+      - { title: "Conversion", href: "#conversion", align: left }
+      - { title: "Geographic", href: "#geographic", align: left }
+      - { title: "Weather Impact", href: "#weather", align: left }
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+# Load required libraries
+library(flexdashboard)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(DT)
+library(shiny)
+library(scales)
+library(viridis)
+library(RColorBrewer)
+library(lubridate)
+library(reshape2)
+library(stringr)
+
+# Set Divvy brand colors
+divvy_primary <- "#3CB4E6"
+divvy_secondary <- "#231F20"
+divvy_tertiary <- "#E8F6FF"
+divvy_palette <- c(divvy_primary, divvy_secondary, "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4")
+
+# Load all data files
+data_path <- "../data/gold/"
+
+# Key datasets for dashboard
+trip_duration <- read.csv(paste0(data_path, "1_trip_duration_analysis.csv"))
+temporal_patterns <- read.csv(paste0(data_path, "2_temporal_usage_patterns.csv"))
+station_analysis <- read.csv(paste0(data_path, "3_station_route_analysis_main.csv"))
+bike_type_analysis <- read.csv(paste0(data_path, "4_bike_type_behavioral_analysis_main.csv"))
+conversion_analysis <- read.csv(paste0(data_path, "5_usage_frequency_conversion_analysis.csv"))
+behavioral_similarity <- read.csv(paste0(data_path, "6_behavioral_similarity_analysis.csv"))
+geographic_hotspots <- read.csv(paste0(data_path, "8_geographic_conversion_hotspots.csv"))
+seasonal_campaigns <- read.csv(paste0(data_path, "9_seasonal_campaign_windows.csv"))
+daily_hourly_targeting <- read.csv(paste0(data_path, "10_daily_hourly_targeting.csv"))
+station_roi <- read.csv(paste0(data_path, "11_station_roi_prioritization.csv"))
+temperature_analysis <- read.csv(paste0(data_path, "13_temperature_elasticity_analysis.csv"))
+precipitation_analysis <- read.csv(paste0(data_path, "14_precipitation_impact_analysis.csv"))
+high_potential_stations <- read.csv(paste0(data_path, "17_high_potential_station_conversion.csv"))
+
+# Custom theme for consistent styling
+theme_divvy <- function() {
+  theme_minimal() +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+    text = element_text(color = divvy_secondary),
+    axis.text = element_text(color = divvy_secondary),
+    strip.text = element_text(color = divvy_secondary, face = "bold"),
+    legend.position = "bottom",
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5)
+  )
+}
+```
+
+Executive Summary {data-navmenu="Dashboard"}
+=====================================
+
+Row {data-height=200}
+-------------------------------------
+
+### Total Annual Trips 2024
+```{r}
+total_trips_2024 <- trip_duration %>%
+  filter(trip_year == 2024) %>%
+  summarise(total = sum(trip_count, na.rm = TRUE)) %>%
+  pull(total)
+
+valueBox(
+  value = scales::comma(total_trips_2024),
+  icon = "fa-bicycle",
+  color = divvy_primary
+)
+```
+
+### Member vs Casual Split 2024
+```{r}
+member_split_2024 <- trip_duration %>%
+  filter(trip_year == 2024) %>%
+  group_by(member_casual) %>%
+  summarise(trips = sum(trip_count, na.rm = TRUE)) %>%
+  mutate(percentage = round(trips/sum(trips)*100, 1))
+
+member_pct <- member_split_2024 %>% filter(member_casual == "member") %>% pull(percentage)
+
+valueBox(
+  value = paste0(member_pct, "% Members"),
+  icon = "fa-users",
+  color = divvy_secondary
+)
+```
+
+### Annual Growth Rate 2024
+```{r}
+growth_2024 <- trip_duration %>%
+  filter(trip_year == 2024, !is.na(yoy_growth_percentage)) %>%
+  summarise(avg_growth = round(mean(yoy_growth_percentage, na.rm = TRUE), 1)) %>%
+  pull(avg_growth)
+
+valueBox(
+  value = paste0("+", growth_2024, "%"),
+  icon = "fa-chart-line",
+  color = "#4ECDC4"
+)
+```
+
+### High Conversion Potential Customers
+```{r}
+high_potential <- conversion_analysis %>%
+  filter(marketing_priority == "Immediate Priority") %>%
+  summarise(customers = sum(user_segments_count, na.rm = TRUE)) %>%
+  pull(customers)
+
+valueBox(
+  value = scales::comma(high_potential),
+  icon = "fa-target",
+  color = "#FF6B6B"
+)
+```
+
+Row {data-height=400}
+-------------------------------------
+
+### Trip Duration Distribution by User Type (2024)
+```{r}
+duration_plot <- trip_duration %>%
+  filter(trip_year == 2024) %>%
+  mutate(duration_category = factor(duration_category, 
+                                   levels = c("Short (≤10 min)", "Medium (10-30 min)", 
+                                             "Long (30-60 min)", "Extra Long (>60 min)"))) %>%
+  ggplot(aes(x = duration_category, y = percentage_of_user_trips, fill = member_casual)) +
+  geom_col(position = "dodge", alpha = 0.8) +
+  scale_fill_manual(values = c("casual" = divvy_primary, "member" = divvy_secondary)) +
+  labs(title = "Trip Duration Patterns",
+       subtitle = "Members prefer shorter trips, casuals enjoy longer rides",
+       x = "Trip Duration Category",
+       y = "Percentage of User Trips",
+       fill = "User Type") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(duration_plot, tooltip = c("x", "y", "fill"))
+```
+
+### Weekly Usage Patterns by User Type (2024)
+```{r}
+weekly_patterns <- temporal_patterns %>%
+  filter(analysis_type == "DAILY_SUMMARY", trip_year == 2024) %>%
+  mutate(day_name = factor(day_name, 
+                          levels = c("Monday", "Tuesday", "Wednesday", "Thursday", 
+                                   "Friday", "Saturday", "Sunday"))) %>%
+  ggplot(aes(x = day_name, y = pct_of_weekly_trips, color = member_casual, group = member_casual)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c("casual" = divvy_primary, "member" = divvy_secondary)) +
+  labs(title = "Weekly Usage Distribution",
+       subtitle = "Members peak on weekdays, casuals on weekends",
+       x = "Day of Week",
+       y = "Percentage of Weekly Trips",
+       color = "User Type") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(weekly_patterns, tooltip = c("x", "y", "colour"))
+```
+
+Row {data-height=400}
+-------------------------------------
+
+### Conversion Opportunity by Usage Frequency
+```{r}
+conversion_opportunity <- conversion_analysis %>%
+  filter(analysis_type == "BREAK_EVEN_ANALYSIS", 
+         savings_category %in% c("High Savings Potential (>$10/month)", "Medium Savings Potential ($5-10/month)")) %>%
+  group_by(usage_frequency_category) %>%
+  summarise(
+    total_users = sum(user_segments_count, na.rm = TRUE),
+    avg_savings = weighted.mean(avg_annual_savings, user_segments_count, na.rm = TRUE),
+    avg_score = weighted.mean(avg_conversion_score, user_segments_count, na.rm = TRUE)
+  ) %>%
+  mutate(usage_frequency_category = factor(usage_frequency_category,
+                                          levels = c("Light User (5-9 trips/month)",
+                                                   "Moderate User (10-14 trips/month)",
+                                                   "Heavy User (15-19 trips/month)",
+                                                   "Super Heavy User (20+ trips/month)"))) %>%
+  ggplot(aes(x = usage_frequency_category, y = total_users)) +
+  geom_col(aes(fill = avg_score), alpha = 0.8) +
+  scale_fill_gradient(low = divvy_tertiary, high = divvy_primary, name = "Conversion\nScore") +
+  labs(title = "Conversion Opportunities by Usage Level",
+       subtitle = "Super heavy users show highest conversion potential",
+       x = "Usage Frequency Category",
+       y = "Number of Users") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(conversion_opportunity, tooltip = c("x", "y", "fill"))
+```
+
+### Seasonal Campaign Budget Allocation
+```{r}
+# Create budget allocation based on trip volume and campaign priority
+seasonal_budget <- seasonal_campaigns %>%
+  filter(analysis_type == "SEASONAL_CAMPAIGN_ANALYSIS") %>%
+  group_by(season) %>%
+  summarise(
+    total_trips = sum(trips_2024, na.rm = TRUE),
+    avg_priority = mean(campaign_priority_score, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    budget_allocation_pct = round((total_trips / sum(total_trips)) * 100, 1),
+    season = factor(season, levels = c("Spring", "Summer", "Fall", "Winter"))
+  ) %>%
+  ggplot(aes(x = season, y = budget_allocation_pct)) +
+  geom_col(fill = divvy_primary, alpha = 0.8) +
+  geom_text(aes(label = paste0(budget_allocation_pct, "%")), 
+            vjust = -0.5, color = divvy_secondary, fontface = "bold") +
+  labs(title = "Recommended Seasonal Budget Allocation",
+       subtitle = "Based on trip volume and campaign priority scores",
+       x = "Season",
+       y = "Budget Allocation (%)") +
+  theme_divvy() +
+  ylim(0, max(50) * 1.1)
+
+ggplotly(seasonal_budget, tooltip = c("x", "y"))
+```
+
+User Behavior Analysis {data-navmenu="Dashboard"}
+=====================================
+
+Row {data-height=400}
+-------------------------------------
+
+### Bike Type Preferences by User Type
+```{r}
+bike_type_viz <- bike_type_analysis %>%
+  filter(analysis_type == "BIKE_PREFERENCES", trip_year == 2024) %>%
+  mutate(
+    rideable_type = gsub('"""', '', rideable_type),
+    rideable_type = gsub('_', ' ', rideable_type),
+    rideable_type = stringr::str_to_title(rideable_type)
+  ) %>%
+  ggplot(aes(x = rideable_type, y = percentage_of_user_trips, fill = member_casual)) +
+  geom_col(position = "dodge", alpha = 0.8) +
+  scale_fill_manual(values = c("casual" = divvy_primary, "member" = divvy_secondary)) +
+  labs(title = "Bike Type Preferences",
+       subtitle = "Classic bikes dominate, e-bikes growing among casuals",
+       x = "Bike Type",
+       y = "Percentage of Trips",
+       fill = "User Type") +
+  theme_divvy()
+
+ggplotly(bike_type_viz, tooltip = c("x", "y", "fill"))
+```
+
+### Hourly Usage Patterns
+```{r}
+# Create simplified hourly patterns from temporal data instead
+hourly_data <- temporal_patterns %>%
+  filter(analysis_type == "DAILY_SUMMARY", trip_year == 2024) %>%
+  group_by(member_casual) %>%
+  summarise(
+    avg_trips = mean(total_daily_trips, na.rm = TRUE),
+    avg_duration = mean(avg_duration_minutes, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+hourly_viz <- hourly_data %>%
+  ggplot(aes(x = member_casual, y = avg_trips, fill = member_casual)) +
+  geom_col(alpha = 0.8) +
+  scale_fill_manual(values = c("casual" = divvy_primary, "member" = divvy_secondary)) +
+  labs(title = "Average Daily Usage by User Type",
+       subtitle = "Members have higher daily trip volume",
+       x = "User Type",
+       y = "Average Daily Trips",
+       fill = "User Type") +
+  theme_divvy()
+
+ggplotly(hourly_viz, tooltip = c("x", "y", "fill"))
+```
+
+Row {data-height=400}
+-------------------------------------
+
+### Average Trip Duration by Day Type
+```{r}
+duration_by_day <- temporal_patterns %>%
+  filter(analysis_type == "DAILY_SUMMARY", trip_year == 2024) %>%
+  group_by(member_casual, day_type) %>%
+  summarise(avg_duration = mean(avg_duration_minutes, na.rm = TRUE), .groups = "drop") %>%
+  ggplot(aes(x = day_type, y = avg_duration, fill = member_casual)) +
+  geom_col(position = "dodge", alpha = 0.8) +
+  scale_fill_manual(values = c("casual" = divvy_primary, "member" = divvy_secondary)) +
+  labs(title = "Trip Duration: Weekday vs Weekend",
+       subtitle = "Casuals take longer rides, especially on weekends",
+       x = "Day Type",
+       y = "Average Duration (minutes)",
+       fill = "User Type") +
+  theme_divvy()
+
+ggplotly(duration_by_day, tooltip = c("x", "y", "fill"))
+```
+
+### Member-like Behavior Among Casuals
+```{r}
+behavioral_sim_data <- behavioral_similarity %>%
+  filter(analysis_type == "MEMBER_LIKE_CASUAL_SUMMARY")
+
+if(nrow(behavioral_sim_data) > 0) {
+  # Since we have summary data, create a different visualization
+  similarity_display <- behavioral_sim_data %>%
+    select(
+      "User Segment Count" = user_segment_count,
+      "Avg Monthly Trips" = avg_monthly_trips,
+      "Overall Similarity %" = avg_similarity_score,
+      "Duration Similarity %" = avg_duration_similarity,
+      "Commute Similarity %" = avg_commute_similarity,
+      "Weekday Similarity %" = avg_weekday_similarity,
+      "Conversion Likelihood" = behavioral_conversion_likelihood
+    )
+  
+  DT::datatable(
+    similarity_display,
+    options = list(
+      pageLength = 10,
+      scrollX = TRUE,
+      dom = 't'
+    ),
+    caption = "Behavioral Similarity Analysis: Casual Users vs Members"
+  ) %>%
+    DT::formatRound(columns = c("Overall Similarity %", "Duration Similarity %", 
+                                "Commute Similarity %", "Weekday Similarity %"), digits = 1)
+} else {
+  p("No behavioral similarity data available")
+}
+```
+
+Conversion Opportunities {data-navmenu="Dashboard"}
+=====================================
+
+Row {data-height=400}
+-------------------------------------
+
+### Financial Break-Even Analysis
+```{r}
+break_even_viz <- conversion_analysis %>%
+  filter(analysis_type == "BREAK_EVEN_ANALYSIS") %>%
+  mutate(savings_category = factor(savings_category,
+                                  levels = c("High Savings Potential (>$10/month)",
+                                           "Medium Savings Potential ($5-10/month)",
+                                           "Low Savings Potential ($0-5/month)",
+                                           "No Financial Benefit"))) %>%
+  group_by(savings_category) %>%
+  summarise(
+    total_users = sum(user_segments_count, na.rm = TRUE),
+    avg_annual_savings = weighted.mean(avg_annual_savings, user_segments_count, na.rm = TRUE)
+  ) %>%
+  ggplot(aes(x = savings_category, y = total_users)) +
+  geom_col(aes(fill = avg_annual_savings), alpha = 0.8) +
+  scale_fill_gradient2(low = "#FF6B6B", mid = divvy_tertiary, high = divvy_primary,
+                       midpoint = 0, name = "Avg Annual\nSavings ($)") +
+  labs(title = "Conversion Segments by Financial Benefit",
+       subtitle = "Focus on high savings potential users for maximum ROI",
+       x = "Savings Category",
+       y = "Number of Users") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(break_even_viz, tooltip = c("x", "y", "fill"))
+```
+
+### Conversion Score Distribution
+```{r}
+score_distribution <- conversion_analysis %>%
+  filter(analysis_type == "BREAK_EVEN_ANALYSIS", !is.na(avg_conversion_score)) %>%
+  ggplot(aes(x = avg_conversion_score, y = user_segments_count)) +
+  geom_point(aes(color = marketing_priority, size = avg_annual_savings), alpha = 0.7) +
+  scale_color_manual(values = c("Immediate Priority" = "#FF6B6B", 
+                               "High Priority" = "#FF8C42",
+                               "Medium Priority" = "#FFA500",
+                               "Low Priority" = "#87CEEB")) +
+  scale_size_continuous(name = "Annual\nSavings ($)", range = c(2, 10)) +
+  labs(title = "Conversion Score vs User Segment Size",
+       subtitle = "Immediate priority segments offer best conversion opportunity",
+       x = "Conversion Score",
+       y = "Number of Users",
+       color = "Marketing Priority") +
+  theme_divvy()
+
+ggplotly(score_distribution, tooltip = c("x", "y", "colour", "size"))
+```
+
+Row {data-height=400}
+-------------------------------------
+
+### Marketing Priority Matrix
+```{r}
+priority_matrix <- conversion_analysis %>%
+  filter(analysis_type == "BREAK_EVEN_ANALYSIS") %>%
+  group_by(marketing_priority, savings_category) %>%
+  summarise(
+    total_users = sum(user_segments_count, na.rm = TRUE),
+    avg_score = weighted.mean(avg_conversion_score, user_segments_count, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  ggplot(aes(x = marketing_priority, y = savings_category)) +
+  geom_tile(aes(fill = total_users), alpha = 0.8) +
+  geom_text(aes(label = scales::comma(total_users)), color = "white", fontface = "bold") +
+  scale_fill_gradient(low = divvy_tertiary, high = divvy_primary, name = "Users") +
+  labs(title = "Marketing Priority Matrix",
+       subtitle = "User distribution across priority and savings segments",
+       x = "Marketing Priority",
+       y = "Savings Category") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(priority_matrix, tooltip = c("x", "y", "fill"))
+```
+
+### Recommended Messaging Strategy
+```{r}
+messaging_data <- conversion_analysis %>%
+  filter(analysis_type == "BREAK_EVEN_ANALYSIS") %>%
+  count(recommended_messaging, marketing_priority) %>%
+  ggplot(aes(x = recommended_messaging, y = n, fill = marketing_priority)) +
+  geom_col(alpha = 0.8) +
+  scale_fill_manual(values = c("Immediate Priority" = "#FF6B6B", 
+                              "High Priority" = "#FF8C42",
+                              "Medium Priority" = "#FFA500",
+                              "Low Priority" = "#87CEEB")) +
+  labs(title = "Messaging Strategy Distribution",
+       subtitle = "Tailor messaging based on user segment priorities",
+       x = "Recommended Messaging",
+       y = "Number of Segments",
+       fill = "Marketing Priority") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(messaging_data, tooltip = c("x", "y", "fill"))
+```
+
+Geographic Analysis {data-navmenu="Dashboard"}
+=====================================
+
+Row {data-height=400}
+-------------------------------------
+
+### Top Geographic Conversion Opportunities
+```{r}
+conversion_summary <- high_potential_stations %>%
+  filter(analysis_type == "HIGH_POTENTIAL_STATION_ANALYSIS") %>%
+  arrange(desc(conversion_opportunity_score)) %>%
+  head(15) %>%
+  ggplot(aes(x = reorder(station_name, conversion_opportunity_score), 
+             y = conversion_opportunity_score)) +
+  geom_col(aes(fill = casual_usage_percentage), alpha = 0.8) +
+  scale_fill_gradient(low = divvy_tertiary, high = divvy_primary, 
+                      name = "Casual %") +
+  coord_flip() +
+  labs(title = "Top 15 High-Potential Conversion Stations",
+       subtitle = "Stations ranked by conversion opportunity score",
+       x = "Station Name",
+       y = "Conversion Opportunity Score") +
+  theme_divvy() +
+  theme(axis.text.y = element_text(size = 8))
+
+ggplotly(conversion_summary, tooltip = c("x", "y"))
+```
+
+### Station ROI Investment Tiers
+```{r}
+roi_tiers <- station_roi %>%
+  filter(analysis_type == "STATION_ROI_ANALYSIS") %>%
+  mutate(
+    investment_level = case_when(
+      str_detect(investment_recommendation, "High Investment") ~ "High Investment",
+      str_detect(investment_recommendation, "Medium Investment") ~ "Medium Investment",
+      str_detect(investment_recommendation, "Low Investment") ~ "Low Investment",
+      TRUE ~ "Other"
+    )
+  ) %>%
+  count(investment_level) %>%
+  ggplot(aes(x = investment_level, y = n)) +
+  geom_col(fill = divvy_primary, alpha = 0.8) +
+  labs(title = "Station Investment Level Distribution",
+       subtitle = "Strategic allocation of marketing resources",
+       x = "Investment Level",
+       y = "Number of Stations") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(roi_tiers, tooltip = c("x", "y"))
+```
+
+Row {data-height=400}
+-------------------------------------
+
+### Geographic Conversion Hotspots
+```{r}
+geo_hotspots <- geographic_hotspots %>%
+  filter(analysis_type == "GEOGRAPHIC_OPPORTUNITY_SUMMARY") %>%
+  arrange(desc(estimated_monthly_revenue_impact)) %>%
+  mutate(
+    revenue_k = estimated_monthly_revenue_impact / 1000,
+    category = paste0(station_name, " (", stations_in_category, " stations)")
+  ) %>%
+  ggplot(aes(x = reorder(category, revenue_k), 
+             y = revenue_k)) +
+  geom_col(aes(fill = geographic_opportunity_score), alpha = 0.8) +
+  scale_fill_gradient(low = divvy_tertiary, high = divvy_primary, 
+                      name = "Opportunity\nScore") +
+  coord_flip() +
+  labs(title = "Geographic Revenue Impact by Category",
+       subtitle = "Estimated monthly revenue impact from conversions",
+       x = "Station Category",
+       y = "Estimated Monthly Revenue (K)") +
+  theme_divvy() +
+  theme(axis.text.y = element_text(size = 8))
+
+ggplotly(geo_hotspots, tooltip = c("x", "y", "fill"))
+```
+
+### Revenue Impact Summary
+```{r}
+revenue_summary <- geographic_hotspots %>%
+  filter(analysis_type == "GEOGRAPHIC_OPPORTUNITY_SUMMARY") %>%
+  mutate(
+    investment_tier = case_when(
+      recommended_strategy == "High Investment Zone" ~ "High Investment",
+      recommended_strategy == "Medium Investment Zone" ~ "Medium Investment", 
+      recommended_strategy == "Low Investment Zone" ~ "Low Investment",
+      TRUE ~ "Other"
+    )
+  ) %>%
+  ggplot(aes(x = investment_tier, y = estimated_monthly_revenue_impact / 1000)) +
+  geom_col(fill = divvy_primary, alpha = 0.8) +
+  labs(title = "Revenue Impact by Investment Tier",
+       subtitle = "Estimated monthly revenue potential by investment level",
+       x = "Investment Tier",
+       y = "Monthly Revenue (K)") +
+  theme_divvy()
+
+ggplotly(revenue_summary, tooltip = c("x", "y"))
+```
+
+Weather Impact Analysis {data-navmenu="Dashboard"}
+=====================================
+
+Row {data-height=400}
+-------------------------------------
+
+### Temperature Sensitivity by User Type
+```{r}
+temp_sensitivity <- temperature_analysis %>%
+  filter(analysis_type == "TEMPERATURE_ELASTICITY_ANALYSIS") %>%
+  ggplot(aes(x = temperature_range, y = total_trips, color = user_type)) +
+  geom_line(aes(group = user_type), size = 1.2) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c("casual" = divvy_primary, "member" = divvy_secondary)) +
+  labs(title = "Temperature Impact on Daily Ridership",
+       subtitle = "Casuals more sensitive to temperature changes",
+       x = "Temperature Range",
+       y = "Total Trips",
+       color = "User Type") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(temp_sensitivity, tooltip = c("x", "y", "colour"))
+```
+
+### Precipitation Impact on Trip Duration
+```{r}
+precip_impact <- precipitation_analysis %>%
+  filter(analysis_type == "PRECIPITATION_IMPACT_ANALYSIS") %>%
+  ggplot(aes(x = precipitation_category, y = avg_daily_trips, fill = user_type)) +
+  geom_col(position = "dodge", alpha = 0.8) +
+  scale_fill_manual(values = c("casual" = divvy_primary, "member" = divvy_secondary)) +
+  labs(title = "Precipitation Effect on Daily Trips",
+       subtitle = "Weather resilience varies by user type",
+       x = "Precipitation Level",
+       y = "Average Daily Trips",
+       fill = "User Type") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(precip_impact, tooltip = c("x", "y", "fill"))
+```
+
+Row {data-height=400}
+-------------------------------------
+
+### Weather-Based Conversion Opportunities
+```{r}
+weather_conversion <- temperature_analysis %>%
+  filter(analysis_type == "TEMPERATURE_ELASTICITY_ANALYSIS") %>%
+  group_by(temperature_range) %>%
+  summarise(
+    avg_conversion_score = mean(conversion_opportunity_score, na.rm = TRUE),
+    total_trips = sum(total_trips, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  ggplot(aes(x = temperature_range, y = avg_conversion_score)) +
+  geom_col(fill = divvy_primary, alpha = 0.8) +
+  labs(title = "Weather-Based Conversion Scoring",
+       subtitle = "Average conversion opportunity by temperature range",
+       x = "Temperature Range",
+       y = "Conversion Opportunity Score") +
+  theme_divvy() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(weather_conversion, tooltip = c("x", "y"))
+```
+
+### Seasonal Weather Strategy
+```{r}
+seasonal_weather <- seasonal_campaigns %>%
+  filter(analysis_type == "SEASONAL_CAMPAIGN_ANALYSIS") %>%
+  group_by(season) %>%
+  summarise(
+    avg_growth = mean(trip_growth_yoy_percent, na.rm = TRUE),
+    total_projected = sum(projected_trips_2025, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(season = factor(season, levels = c("Spring", "Summer", "Fall", "Winter"))) %>%
+  ggplot(aes(x = season, y = avg_growth)) +
+  geom_col(fill = divvy_primary, alpha = 0.8) +
+  geom_text(aes(label = paste0(ifelse(avg_growth >= 0, "+", ""), round(avg_growth, 1), "%")), 
+            vjust = -0.5, color = divvy_secondary, fontface = "bold") +
+  labs(title = "Seasonal Growth Patterns",
+       subtitle = "YoY growth trends by season",
+       x = "Season",
+       y = "Average YoY Growth (%)") +
+  theme_divvy()
+
+ggplotly(seasonal_weather, tooltip = c("x", "y"))
+```
