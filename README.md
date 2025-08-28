@@ -51,20 +51,20 @@ A **production-ready business intelligence platform** that transforms raw transp
 - **Automated Pipelines**: Docker-based Airflow orchestration processing 300K+ trips monthly
 - **Real-time Integration**: GBFS station data and weather APIs for comprehensive analysis
 
-** Strategic Analytics Engine:**
+**Strategic Analytics Engine:**
 - **20+ SQL Analyses**: Covering 5 critical business questions from user behavior to revenue optimization
 - **Interactive Dashboard**: Real-time business intelligence with filtering, drill-down capabilities, and executive KPIs
 - **Predictive Modeling**: Conversion scoring algorithms identifying high-potential customers with 70%+ accuracy
 - **ROI Optimization**: Station-level investment prioritization and campaign efficiency analysis
 
-** Business Impact Delivered:**
+**Business Impact Delivered:**
 - **Customer Value**: $4.1M+ annual savings identified for 609 high-usage casual riders
 - **Revenue Predictability**: $88K+ annual membership revenue from priority conversions (at $143.90/membership)
 - **Cost Optimization**: 34% reduction in untargeted marketing spend through behavioral segmentation
 - **Strategic Planning**: Weather-adjusted forecasting and seasonal campaign optimization
 - **Operational Excellence**: Geographic hotspot identification and station investment prioritization
 
-** Key Deliverables:**
+**Key Deliverables:**
 1. **Production Dashboard**: Live analytics platform with 5 business intelligence modules
 2. **Data Pipeline**: Scalable ETL infrastructure processing multi-source data integration
 3. **Strategic Insights**: 14 priority stations and 609 high-conversion potential users identified
@@ -929,6 +929,220 @@ dbt compile
 📚 **Detailed Setup Guide**: See [docs/environment-setup.md](docs/environment-setup.md) for comprehensive instructions.
 
 ## Contributions and Feedback
+
+We welcome contributions from the data engineering and analytics community. This project serves as both a portfolio demonstration and a learning resource for modern data engineering practices.
+
+### 🤝 How to Contribute
+
+#### **Types of Contributions Welcome**
+- **🐛 Bug Fixes**: Report or fix issues in data pipeline, infrastructure, or analytics
+- **✨ Feature Enhancements**: Add new analytics, improve dashboard functionality, or extend data sources
+- **📚 Documentation**: Improve setup guides, add tutorials, or enhance code documentation
+- **🧪 Testing**: Add data quality tests, infrastructure validation, or CI/CD improvements
+- **🎨 UI/UX**: Enhance dashboard design, add new visualizations, or improve user experience
+- **⚡ Performance**: Optimize queries, reduce costs, or improve pipeline efficiency
+
+#### **Contributing Started**
+1. **Fork the Repository**: Click the "Fork" button on GitHub
+2. **Set Up Development Environment**: Follow the [Getting Started](#getting-started) guide
+3. **Choose an Issue**: Check [GitHub Issues](https://github.com/pizofreude/divvybikes-share-success/issues) or create a new one
+4. **Follow Git Conventions**: Use our simplified branch and commit naming standards (see below)
+
+### 📝 Git Conventions
+
+We follow a **simplified Git convention** based on [dev.to best practices](https://dev.to/varbsan/a-simplified-convention-for-naming-branches-and-commits-in-git-il4) for consistent and clean version control.
+
+#### **Branch Naming Convention**
+Use the pattern: `<category>/<reference>/<description-in-kebab-case>`
+
+**Categories:**
+- `feature` - Adding, refactoring, or removing a feature
+- `bugfix` - Fixing a bug  
+- `hotfix` - Emergency fixes or temporary solutions
+- `test` - Experimentation outside of issues/tickets
+
+**Examples:**
+```bash
+# Feature development
+git checkout -b feature/issue-15/add-weather-forecast-module
+
+# Bug fixes
+git checkout -b bugfix/issue-23/fix-dashboard-mobile-responsiveness
+
+# Hot fixes
+git checkout -b hotfix/no-ref/fix-redshift-connection-timeout
+
+# Testing/experimentation
+git checkout -b test/no-ref/evaluate-apache-iceberg-integration
+```
+
+#### **Commit Message Convention**
+Use the pattern: `<category>: <imperative statements separated by semicolons>`
+
+**Categories:**
+- `feat` - Adding a new feature
+- `fix` - Fixing a bug
+- `refactor` - Performance or convenience improvements
+- `chore` - Documentation, formatting, tests, cleanup
+
+**Examples:**
+```bash
+# Feature commits
+git commit -m "feat: add weather forecast integration; update dashboard with 7-day predictions"
+
+# Bug fix commits  
+git commit -m "fix: resolve mobile responsive issues in dashboard; adjust CSS breakpoints"
+
+# Refactoring
+git commit -m "refactor: optimize SQL queries for better performance; reduce Redshift compute costs"
+
+# Documentation/maintenance
+git commit -m "chore: update README with deployment troubleshooting; add cost optimization guide"
+```
+
+### 🔄 Contribution Workflow
+
+#### **1. Issue Creation**
+```bash
+# For bug reports, include:
+- Steps to reproduce
+- Expected vs actual behavior  
+- Environment details (OS, Python version, etc.)
+- Error logs or screenshots
+
+# For feature requests, include:
+- Business justification
+- Technical requirements
+- Acceptance criteria
+- Impact assessment
+```
+
+#### **2. Development Process**
+```bash
+# 1. Create and checkout feature branch
+git checkout -b feature/issue-42/enhance-conversion-analytics
+
+# 2. Make changes following project patterns
+# - Follow existing code structure
+# - Add appropriate tests (dbt tests, unit tests)
+# - Update documentation as needed
+
+# 3. Commit changes with clear messages
+git commit -m "feat: add customer lifetime value analysis; implement CLV scoring algorithm"
+
+# 4. Push branch and create Pull Request
+git push origin feature/issue-42/enhance-conversion-analytics
+```
+
+#### **3. Pull Request Guidelines**
+- **Title**: Use the same format as commit messages
+- **Description**: Include context, changes made, and testing performed
+- **Checklist**: 
+  - [ ] Code follows project conventions
+  - [ ] Tests added/updated and passing
+  - [ ] Documentation updated
+  - [ ] No breaking changes (or clearly documented)
+  - [ ] Cost impact assessed (for infrastructure changes)
+
+#### **4. Code Review Process**
+- All PRs require review before merging
+- Address feedback promptly and professionally
+- Squash commits before merging for clean history
+- Delete feature branches after successful merge
+
+### 🧪 Testing Standards
+
+#### **Data Quality Tests**
+```sql
+-- Add dbt tests for new models
+-- Example: tests/assert_trip_duration_positive.sql
+SELECT *
+FROM {{ ref('trips_enhanced') }}
+WHERE trip_duration_minutes <= 0
+```
+
+#### **Infrastructure Tests**
+```bash
+# Test infrastructure changes
+cd terraform
+terraform plan -var-file="environments/dev/terraform.tfvars"
+terraform validate
+```
+
+#### **Dashboard Tests**
+```r
+# Test R Shiny dashboard functionality
+# Verify all visualizations render correctly
+# Check responsive design on multiple screen sizes
+```
+
+### 💬 Community Guidelines
+
+#### **Communication Standards**
+- **Be Respectful**: Treat all contributors with respect and professionalism
+- **Be Constructive**: Provide specific, actionable feedback
+- **Be Patient**: Remember that contributors have varying experience levels
+- **Be Collaborative**: Work together to find the best solutions
+
+#### **Code of Conduct**
+- Use welcoming and dignifying language
+- Respect differing viewpoints and experiences
+- Accept constructive criticism gracefully
+- Focus on what's best for the community and project
+
+### 📊 Contribution Recognition
+
+#### **Contributors Wall**
+All contributors will be recognized in our documentation and release notes.
+
+#### **Types of Recognition**
+- **🏆 Major Contributors**: Significant feature additions or architectural improvements
+- **🐛 Bug Hunters**: Critical bug fixes and quality improvements  
+- **📚 Documentation Heroes**: Comprehensive documentation improvements
+- **🎨 UX Champions**: Dashboard and user experience enhancements
+- **⚡ Performance Optimizers**: Cost reduction and efficiency improvements
+
+### 🚀 Areas for Contribution
+
+#### **High Priority**
+- **Real-time Analytics**: Implement streaming data processing with Apache Kafka
+- **Machine Learning**: Add predictive models for demand forecasting
+- **Multi-City Support**: Extend platform to support multiple bike-share systems
+- **Advanced Visualizations**: Create interactive maps and time-series forecasting charts
+
+#### **Medium Priority**  
+- **API Development**: Create REST APIs for external data access
+- **Mobile Dashboard**: Develop mobile-optimized analytics interface
+- **Cost Optimization**: Implement S3 Intelligent Tiering and Reserved Instances
+- **Testing Framework**: Expand automated testing coverage
+
+#### **Documentation Needs**
+- **Video Tutorials**: Step-by-step deployment and usage guides
+- **Architecture Deep Dives**: Detailed technical documentation
+- **Use Case Examples**: Additional business analysis scenarios  
+- **Troubleshooting Guides**: Common issues and solutions
+
+### 📞 Getting Help
+
+#### **Support Channels**
+- **GitHub Issues**: Technical questions and bug reports
+- **GitHub Discussions**: General questions and feature discussions
+
+### 🎯 Project Roadmap
+
+#### **Q4 2025**
+- Real-time data streaming implementation
+- Machine learning model deployment
+- Multi-environment CI/CD pipeline
+
+#### **Q1 2026**
+- Multi-city platform expansion
+- Advanced analytics features
+- Performance optimization phase
+
+---
+
+**Ready to contribute?** Start by reviewing our [open issues](https://github.com/pizofreude/divvybikes-share-success/issues) or create a new one to discuss your ideas.
 
 ## License
 
