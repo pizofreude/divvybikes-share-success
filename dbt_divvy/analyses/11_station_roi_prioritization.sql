@@ -232,7 +232,7 @@ roi_prioritization AS (
         -- Expected conversion metrics
         ROUND(total_casual_trips_2024 * 0.15, 0) as conservative_conversion_target,  -- 15% conversion rate
         ROUND(total_casual_trips_2024 * 0.25, 0) as optimistic_conversion_target,   -- 25% conversion rate
-        ROUND(total_casual_trips_2024 * 0.20 * 180, 0) as annual_revenue_potential  -- 20% avg * $180/year
+        ROUND(total_casual_trips_2024 * 0.20 * {{ var('annual_membership_price') }}, 0) as annual_revenue_potential  -- 20% avg * membership price
         
     FROM station_opportunity_scoring
 )
