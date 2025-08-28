@@ -1,6 +1,9 @@
 /*
 BUSINESS QUESTION 2A: Usage Frequency Thresholds for Financial Conversion
-========================================================================
+====================================        ROUND(AVG(avg_annual_trips), 2) as avg_annual_trips,
+        ROUND(AVG(projected_annual_casual_cost), 2) as avg_annual_casual_cost,
+        {{ var('annual_membership_price') }} as annual_membership_cost,
+        ROUND(AVG(projected_annual_savings), 2) as avg_annual_savings,================================
 
 INSIGHT OBJECTIVE:
 Identify usage frequency and cost thresholds that make membership financially beneficial
@@ -98,8 +101,8 @@ annual_projection AS (
         -- Annual projections
         AVG(monthly_trips) * 12 as projected_annual_trips,
         AVG(monthly_casual_cost) * 12 as projected_annual_casual_cost,
-        180.00 as annual_membership_cost, -- $15 * 12 months
-        (AVG(monthly_casual_cost) * 12) - 180.00 as projected_annual_savings,
+        {{ var('annual_membership_price') }} as annual_membership_cost, -- Use dbt variable for consistency
+        (AVG(monthly_casual_cost) * 12) - {{ var('annual_membership_price') }} as projected_annual_savings,
         -- Consistency score (more months = more reliable conversion target)
         ROUND(COUNT(*) * 100.0 / 12, 2) as usage_consistency_percentage
     FROM usage_frequency_segments
@@ -115,7 +118,7 @@ break_even_analysis AS (
         ROUND(AVG(avg_monthly_trips), 2) as avg_monthly_trips,
         ROUND(AVG(projected_annual_trips), 2) as avg_annual_trips,
         ROUND(AVG(projected_annual_casual_cost), 2) as avg_annual_casual_cost,
-        180.00 as annual_membership_cost,
+        {{ var('annual_membership_price') }} as annual_membership_cost,
         ROUND(AVG(projected_annual_savings), 2) as avg_annual_savings,
         ROUND(AVG(avg_conversion_score), 2) as avg_conversion_score,
         ROUND(AVG(usage_consistency_percentage), 2) as consistency_score,
@@ -153,7 +156,7 @@ SELECT
         ELSE 'Lifestyle Message: Focus on convenience, not savings'
     END as recommended_messaging,
     -- Break-even trip calculation
-    ROUND(180.0 / (avg_annual_casual_cost / avg_annual_trips), 0) as break_even_annual_trips
+    ROUND({{ var('annual_membership_price') }} / (avg_annual_casual_cost / avg_annual_trips), 0) as break_even_annual_trips
 FROM break_even_analysis
 
 UNION ALL
@@ -177,7 +180,7 @@ SELECT
         ELSE 'Medium Priority'
     END as marketing_priority,
     ap.station_name as recommended_messaging,
-    ROUND(180.0 / (ap.projected_annual_casual_cost / ap.projected_annual_trips), 0) as break_even_annual_trips
+    ROUND({{ var('annual_membership_price') }} / (ap.projected_annual_casual_cost / ap.projected_annual_trips), 0) as break_even_annual_trips
 FROM annual_projection ap
 WHERE ap.projected_annual_savings > 50  -- Focus on financially beneficial conversions
     AND ap.usage_consistency_percentage > 40  -- Consistent users only
