@@ -88,8 +88,9 @@ calculate_kpis <- function(data) {
       if (nrow(conversion_data) > 0 && "user_segments_count" %in% colnames(conversion_data)) {
         kpis$conversion_potential <- format(sum(conversion_data$user_segments_count, na.rm = TRUE), big.mark = ",")
         
-        if ("avg_annual_savings" %in% colnames(conversion_data)) {
-          revenue <- sum(conversion_data$avg_annual_savings * conversion_data$user_segments_count, na.rm = TRUE)
+        if ("annual_membership_cost" %in% colnames(conversion_data)) {
+          # Calculate actual business revenue: number of conversions * membership price
+          revenue <- sum(conversion_data$user_segments_count * conversion_data$annual_membership_cost, na.rm = TRUE)
           kpis$revenue_opportunity <- paste0("$", format(round(revenue/1000, 0), big.mark = ","), "K")
         }
       }
@@ -444,10 +445,12 @@ server <- function(input, output, session) {
       if ("11_station_roi_prioritization" %in% names(analytics_data)) {
         data <- analytics_data[["11_station_roi_prioritization"]] %>%
           filter(analysis_type == "STATION_ROI_ANALYSIS") %>%
+          filter(!is.na(station_name) & !is.na(annual_revenue_potential)) %>%
+          filter(station_name != "" & annual_revenue_potential > 0) %>%
           arrange(desc(annual_revenue_potential)) %>%
           head(12)
         
-        if (all(c("station_name", "annual_revenue_potential", "investment_recommendation") %in% colnames(data))) {
+        if (nrow(data) > 0 && all(c("station_name", "annual_revenue_potential", "investment_recommendation") %in% colnames(data))) {
           # Clean station names
           data$station_name <- gsub('"""', '', data$station_name)
           
@@ -470,7 +473,7 @@ server <- function(input, output, session) {
           
           ggplotly(p)
         } else {
-          stop("Required columns not found")
+          stop("Required columns not found or no valid data")
         }
       } else {
         stop("Station ROI data not available")
